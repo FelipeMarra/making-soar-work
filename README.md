@@ -1,2 +1,2 @@
 # making soar work
- making the SOAR cogninitve architecture work with unity
+ making the SOAR cogninitve architecture work with Unity
