@@ -4,33 +4,9 @@ using sml;
 using UnityEngine;
 
 namespace TestCSharpSML {
-	/// <summary>
-	/// Summary description for Class1.
-	/// </summary>
+
 	class CSharpInterface {
-        /// <summary>
-		/// The main entry point for the application.
-		/// </summary>
-		[STAThread]
-		public static void Main() {
-			CSharpInterface test = new CSharpInterface();
-
-			bool result = false;
-			try {
-				result = test.Test();
-			}
-			catch (Exception ex) {
-				Debug.Log(ex);
-			}
-
-			Debug.Log("-----------------------------");
-			if (result)
-				Debug.Log("Tests assed");
-			else
-				Debug.Log("Tests failed");
-		}
-
-		bool Test() {
+		public bool Test() {
 			Kernel kernel = Kernel.CreateKernelInNewThread();
 
 			// Make sure the kernel was ok
