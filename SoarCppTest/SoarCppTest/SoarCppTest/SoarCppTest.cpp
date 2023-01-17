@@ -93,5 +93,4 @@ void soar_test() {
     // Shutdown and clean up
     pKernel->Shutdown();   // Deletes all agents (unless using a remote connection)
     delete pKernel;                // Deletes the kernel itself
-
-} // end main
+}

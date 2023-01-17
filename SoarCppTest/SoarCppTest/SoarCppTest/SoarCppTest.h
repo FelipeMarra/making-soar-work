@@ -1,9 +1,9 @@
 #pragma once
 
-#ifdef SOARCPP_EXPORTS
-#define SOARCPP_API __declspec(dllexport)
+#ifdef SOARCPPTEST_EXPORTS
+#define SOARCPPTEST_API __declspec(dllexport)
 #else
-#define SOARCPP_API __declspec(dllimport)
+#define SOARCPPTEST_API __declspec(dllimport)
 #endif
 
-extern "C" SOARCPP_API void soar_test();
+extern "C" SOARCPPTEST_API void soar_test();

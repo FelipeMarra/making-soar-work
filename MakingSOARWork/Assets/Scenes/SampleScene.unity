@@ -363,6 +363,7 @@ GameObject:
   - component: {fileID: 1389698560}
   - component: {fileID: 1389698559}
   - component: {fileID: 1389698561}
+  - component: {fileID: 1389698562}
   m_Layer: 0
   m_Name: TestSOARObj
   m_TagString: Untagged
@@ -407,5 +408,17 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: -1692345414, guid: 135902205b082b64a81c84b751c6fc90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1389698562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389698558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c133c339f1bc5ac4084156f720ce1d0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
