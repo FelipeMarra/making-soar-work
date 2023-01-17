@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace TestCSharpSML {
 
-	class CSharpInterface {
+	public class DirectCSharpSML {
 		public bool Test() {
 			Kernel kernel = Kernel.CreateKernelInNewThread();
 
@@ -21,7 +21,7 @@ namespace TestCSharpSML {
 			if (kernel.HadError())
 				throw new Exception("Error creating agent: " + kernel.GetLastErrorDescription());
 
-			bool ok = agent.LoadProductions(Application.dataPath + "\\SOAR\\test_soar.soar");
+			bool ok = agent.LoadProductions(Application.dataPath + "\\SOAR Productions\\test_soar.soar");
 			if (!ok) {
 				Debug.Log("Load failed"); 
 				return false;

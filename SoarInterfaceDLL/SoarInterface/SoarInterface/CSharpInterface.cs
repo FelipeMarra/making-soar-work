@@ -51,7 +51,7 @@ namespace SoarInterface
 			if (kernel.HadError())
 				throw new Exception("Error creating agent: " + kernel.GetLastErrorDescription());
 
-			bool ok = agent.LoadProductions(Application.dataPath + "\\SOAR\\test_soar.soar");
+			bool ok = agent.LoadProductions(Application.dataPath + "\\SOAR Productions\\test_soar.soar");
 			if (!ok)
 			{
 				Debug.Log("Load failed");
