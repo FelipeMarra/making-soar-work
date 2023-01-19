@@ -40,30 +40,30 @@ namespace TestCSharpSML {
 
 			String myTestData = "my data";
 			Agent.RunEventCallback runCall = new Agent.RunEventCallback(MyRunEventCallback);			
-			Agent.ProductionEventCallback prodCall = new Agent.ProductionEventCallback(MyProductionEventCallback);			
-			Agent.PrintEventCallback printCall = new Agent.PrintEventCallback(MyPrintEventCallback);			
-			Agent.OutputEventCallback outputCall = new Agent.OutputEventCallback(MyOutputEventCallback);
-			Agent.XMLEventCallback xmlCall		 = new Agent.XMLEventCallback(MyXMLEventCallback);
-			Agent.OutputNotificationCallback noteCall = new Agent.OutputNotificationCallback(MyOutputNotificationCallback);
-			Kernel.AgentEventCallback agentCall = new Kernel.AgentEventCallback(MyAgentEventCallback);
-			Kernel.SystemEventCallback systemCall = new Kernel.SystemEventCallback(MySystemEventCallback);	
-			Kernel.UpdateEventCallback updateCall = new Kernel.UpdateEventCallback(MyUpdateEventCallback);
-			Kernel.StringEventCallback strCall    = new Kernel.StringEventCallback(MyStringEventCallback);
-			Kernel.RhsFunction rhsCall			  = new Kernel.RhsFunction(MyTestRhsFunction);
-			Kernel.ClientMessageCallback clientCall	= new Kernel.ClientMessageCallback(MyTestClientMessageCallback);
+			// Agent.ProductionEventCallback prodCall = new Agent.ProductionEventCallback(MyProductionEventCallback);			
+			// Agent.PrintEventCallback printCall = new Agent.PrintEventCallback(MyPrintEventCallback);			
+			// Agent.OutputEventCallback outputCall = new Agent.OutputEventCallback(MyOutputEventCallback);
+			// Agent.XMLEventCallback xmlCall		 = new Agent.XMLEventCallback(MyXMLEventCallback);
+			// Agent.OutputNotificationCallback noteCall = new Agent.OutputNotificationCallback(MyOutputNotificationCallback);
+			// Kernel.AgentEventCallback agentCall = new Kernel.AgentEventCallback(MyAgentEventCallback);
+			// Kernel.SystemEventCallback systemCall = new Kernel.SystemEventCallback(MySystemEventCallback);	
+			// Kernel.UpdateEventCallback updateCall = new Kernel.UpdateEventCallback(MyUpdateEventCallback);
+			// Kernel.StringEventCallback strCall    = new Kernel.StringEventCallback(MyStringEventCallback);
+			// Kernel.RhsFunction rhsCall			  = new Kernel.RhsFunction(MyTestRhsFunction);
+			// Kernel.ClientMessageCallback clientCall	= new Kernel.ClientMessageCallback(MyTestClientMessageCallback);
 
 			int runCallbackID	= agent.RegisterForRunEvent(smlRunEventId.smlEVENT_AFTER_DECISION_CYCLE, runCall, myTestData);
-			int prodCallbackID	= agent.RegisterForProductionEvent(smlProductionEventId.smlEVENT_AFTER_PRODUCTION_FIRED, prodCall, myTestData);
-			int printCallbackID	= agent.RegisterForPrintEvent(smlPrintEventId.smlEVENT_PRINT, printCall, myTestData);
-			int outputCallbackID= agent.AddOutputHandler("move", outputCall, myTestData);
-			int noteCallbackID  = agent.RegisterForOutputNotification(noteCall, myTestData);
-			int xmlCallbackID   = agent.RegisterForXMLEvent(smlXMLEventId.smlEVENT_XML_TRACE_OUTPUT, xmlCall, myTestData);
-			int agentCallbackID	= kernel.RegisterForAgentEvent(smlAgentEventId.smlEVENT_BEFORE_AGENT_REINITIALIZED, agentCall, myTestData);
-            int systemCallbackID = kernel.RegisterForSystemEvent(smlSystemEventId.smlEVENT_SYSTEM_START, systemCall, myTestData);
-			int updateCallbackID= kernel.RegisterForUpdateEvent(smlUpdateEventId.smlEVENT_AFTER_ALL_OUTPUT_PHASES, updateCall, myTestData);
-			//int stringCallbackID= kernel.RegisterForStringEvent(smlStringEventId.smlEVENT_EDIT_PRODUCTION, strCall, myTestData);
-			int rhsCallbackID	= kernel.AddRhsFunction("test-rhs", rhsCall, myTestData);
-			int clientCallbackID= kernel.RegisterForClientMessageEvent("test-client", clientCall, myTestData);
+			// int prodCallbackID	= agent.RegisterForProductionEvent(smlProductionEventId.smlEVENT_AFTER_PRODUCTION_FIRED, prodCall, myTestData);
+			// int printCallbackID	= agent.RegisterForPrintEvent(smlPrintEventId.smlEVENT_PRINT, printCall, myTestData);
+			// int outputCallbackID= agent.AddOutputHandler("move", outputCall, myTestData);
+			// int noteCallbackID  = agent.RegisterForOutputNotification(noteCall, myTestData);
+			// int xmlCallbackID   = agent.RegisterForXMLEvent(smlXMLEventId.smlEVENT_XML_TRACE_OUTPUT, xmlCall, myTestData);
+			// int agentCallbackID	= kernel.RegisterForAgentEvent(smlAgentEventId.smlEVENT_BEFORE_AGENT_REINITIALIZED, agentCall, myTestData);
+            // int systemCallbackID = kernel.RegisterForSystemEvent(smlSystemEventId.smlEVENT_SYSTEM_START, systemCall, myTestData);
+			// int updateCallbackID= kernel.RegisterForUpdateEvent(smlUpdateEventId.smlEVENT_AFTER_ALL_OUTPUT_PHASES, updateCall, myTestData);
+			// //int stringCallbackID= kernel.RegisterForStringEvent(smlStringEventId.smlEVENT_EDIT_PRODUCTION, strCall, myTestData);
+			// int rhsCallbackID	= kernel.AddRhsFunction("test-rhs", rhsCall, myTestData);
+			// int clientCallbackID= kernel.RegisterForClientMessageEvent("test-client", clientCall, myTestData);
 
 			// Running the agent will trigger most of the events we're listening for so
 			// we can check that they're working correctly.
@@ -74,17 +74,17 @@ namespace TestCSharpSML {
 			agent.InitSoar();
 
 			ok = agent.UnregisterForRunEvent(runCallbackID);
-			ok = ok && agent.UnregisterForProductionEvent(prodCallbackID);
-			ok = ok && agent.UnregisterForPrintEvent(printCallbackID);
-			ok = ok && agent.RemoveOutputHandler(outputCallbackID);
-			ok = ok && agent.UnregisterForOutputNotification(noteCallbackID);
-			ok = ok && agent.UnregisterForXMLEvent(xmlCallbackID);
-			ok = ok && kernel.UnregisterForAgentEvent(agentCallbackID);
-			ok = ok && kernel.UnregisterForSystemEvent(systemCallbackID);
-			ok = ok && kernel.UnregisterForUpdateEvent(updateCallbackID);
-			//ok = ok && kernel.UnregisterForStringEvent(stringCallbackID);
-			ok = ok && kernel.RemoveRhsFunction(rhsCallbackID);
-			ok = ok && kernel.UnregisterForClientMessageEvent(clientCallbackID);
+			// ok = ok && agent.UnregisterForProductionEvent(prodCallbackID);
+			// ok = ok && agent.UnregisterForPrintEvent(printCallbackID);
+			// ok = ok && agent.RemoveOutputHandler(outputCallbackID);
+			// ok = ok && agent.UnregisterForOutputNotification(noteCallbackID);
+			// ok = ok && agent.UnregisterForXMLEvent(xmlCallbackID);
+			// ok = ok && kernel.UnregisterForAgentEvent(agentCallbackID);
+			// ok = ok && kernel.UnregisterForSystemEvent(systemCallbackID);
+			// ok = ok && kernel.UnregisterForUpdateEvent(updateCallbackID);
+			// //ok = ok && kernel.UnregisterForStringEvent(stringCallbackID);
+			// ok = ok && kernel.RemoveRhsFunction(rhsCallbackID);
+			// ok = ok && kernel.UnregisterForClientMessageEvent(clientCallbackID);
 
 			if (!ok) {
 				Debug.Log("Failed to unregister an event");

@@ -6,4 +6,4 @@
 #define SOARCPPTEST_API __declspec(dllimport)
 #endif
 
-extern "C" SOARCPPTEST_API void soar_test();
+extern "C" SOARCPPTEST_API int soar_test();

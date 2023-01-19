@@ -1,11 +1,19 @@
 // SoarCppConsoleApp.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-
+#include <iostream>
 #include "SoarCppConsoleApp.h"
 #include "include/sml_Client.h"
 
 using namespace sml;
 using namespace std;
+
+void MyPrintEventHandler(smlPrintEventId id, void* pUserData, Agent* pAgent, char const* pMessage)
+{
+    // In this case the user data is a string we're building up
+    std::string* pTrace = (std::string*)pUserData;
+
+    (*pTrace) += pMessage;
+}
 
 int soar_test() {
     int debug = 0;
@@ -36,7 +44,7 @@ int soar_test() {
     }
 
     // Load some productions
-    pAgent->LoadProductions("testsml.soar");
+    //Agent->LoadProductions("testsml.soar");
     debug++; //3
 
     if (pAgent->HadError())
@@ -61,25 +69,29 @@ int soar_test() {
     pAgent->Commit();
     debug++; //6
 
+    std::string trace;
+    int callbackp = pAgent->RegisterForPrintEvent(smlEVENT_PRINT, MyPrintEventHandler, &trace);
+    debug++; //7
+
     // Run Soar for 2 decisions
     pAgent->RunSelf(2);
-    debug++; //7
+    debug++; //8
 
     // Change (P1 ^speed) to 300 and send that change to Soar
     pAgent->Update(pWME2, 300);
-    debug++; //8
+    debug++; //9
 
     pAgent->Commit();
-    debug++; //9
+    debug++; //10
 
     // Run Soar until it generates output or 15 decision cycles have passed
     // (More normal case is to just run for a decision rather than until output).
     pAgent->RunSelfTilOutput();
-    debug++; //10
+    debug++; //11
 
     // Go through all the commands we've received (if any) since we last ran Soar.
     int numberCommands = pAgent->GetNumberCommands();
-    debug++; //11
+    debug++; //12
 
     for (int i = 0; i < numberCommands; i++)
     {
@@ -96,26 +108,26 @@ int soar_test() {
         // Or could do the same manually like this:
                 // pAgent->CreateStringWME(pCommand, "status", "complete") ;
     }
-    debug++; //12
+    debug++; //13
 
     // See if anyone (e.g. a debugger) has sent commands to Soar
     // Without calling this method periodically, remote connections will be ignored if
     // we choose the "CreateKernelInCurrentThread" method.
     pKernel->CheckForIncomingCommands();
-    debug++; //13
+    debug++; //14
 
     // Create an example Soar command line
     std::string cmd = "excise --all";
-    debug++; //14
+    debug++; //15
 
     // Execute the command
     char const* pResult = pKernel->ExecuteCommandLine(cmd.c_str(), pAgent->GetAgentName());
-    debug++; //15
+    debug++; //16
 
     // Shutdown and clean up
     pKernel->Shutdown();   // Deletes all agents (unless using a remote connection)
     delete pKernel;                // Deletes the kernel itself
-    debug++; //16
+    debug++; //17
 
     return debug;
 }

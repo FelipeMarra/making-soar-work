@@ -4,9 +4,12 @@ using UnityEngine;
 public class UsingNativeCppDLL : MonoBehaviour
 {
     [DllImport("SoarCppTest")]
-    private static extern void soar_test();
+    public static extern int soar_test();
 
-    void Start() {
-        soar_test();
+
+
+    void Start()
+    {
+        Debug.Log(soar_test());
     }
 }
