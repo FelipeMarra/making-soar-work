@@ -1,2 +1,5 @@
 ﻿  SoarCppTest.cpp
-  SoarCppTest.vcxproj -> C:\Users\felip\Documents\GitHub\making-soar-work\SoarCppTest\SoarCppTest\x64\Debug\SoarCppTest.dll
+C:\Users\felip\Documents\GitHub\making-soar-work\SoarCppTest\SoarCppTest\SoarCppTest\SoarCppTest.cpp(9,18): error C2556: 'void soar_test(void)': overloaded function differs only by return type from 'int soar_test(void)'
+C:\Users\felip\Documents\GitHub\making-soar-work\SoarCppTest\SoarCppTest\SoarCppTest\SoarCppTest.h(9): message : see declaration of 'soar_test'
+C:\Users\felip\Documents\GitHub\making-soar-work\SoarCppTest\SoarCppTest\SoarCppTest\SoarCppTest.cpp(9,6): error C2371: 'soar_test': redefinition; different basic types
+C:\Users\felip\Documents\GitHub\making-soar-work\SoarCppTest\SoarCppTest\SoarCppTest\SoarCppTest.h(9): message : see declaration of 'soar_test'

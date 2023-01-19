@@ -1,0 +1,1 @@
+C:\Users\felip\Documents\GitHub\making-soar-work\SoarCppTest\SoarCppTest\SoarCppTest\x64\Debug\SoarCppTest.vcxproj.AssemblyReference.cache

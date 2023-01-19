@@ -1,0 +1,7 @@
+﻿  SoarCppConsoleApp.cpp
+     Creating library C:\Users\felip\Documents\GitHub\making-soar-work\SoarCppConsoleApp\SoarCppConsoleApp\x64\Release\SoarCppConsoleApp.lib and object C:\Users\felip\Documents\GitHub\making-soar-work\SoarCppConsoleApp\SoarCppConsoleApp\x64\Release\SoarCppConsoleApp.exp
+  Generating code
+  Compiler switch has changed, fall back to full compilation.
+  All 78 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  SoarCppConsoleApp.vcxproj -> C:\Users\felip\Documents\GitHub\making-soar-work\SoarCppConsoleApp\SoarCppConsoleApp\x64\Release\SoarCppConsoleApp.dll
