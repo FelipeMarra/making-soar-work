@@ -1,0 +1,11 @@
+﻿  pch.cpp
+  dllmain.cpp
+  UnitySoarSquareEx.cpp
+C:\Users\felip\Documents\GitHub\making-soar-work\UnitySoarSquareEx\DLL\SquareExDLL\SquareExDLL\UnitySoarSquareEx.cpp(18,17): warning C4273: 'soar_test': inconsistent dll linkage
+C:\Users\felip\Documents\GitHub\making-soar-work\UnitySoarSquareEx\DLL\SquareExDLL\SquareExDLL\UnitySoarSquareEx.h(9,38): message : see previous definition of 'soar_test'
+     Creating library C:\Users\felip\Documents\GitHub\making-soar-work\UnitySoarSquareEx\DLL\SquareExDLL\x64\Release\SquareExDLL.lib and object C:\Users\felip\Documents\GitHub\making-soar-work\UnitySoarSquareEx\DLL\SquareExDLL\x64\Release\SquareExDLL.exp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 2104 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  SquareExDLL.vcxproj -> C:\Users\felip\Documents\GitHub\making-soar-work\UnitySoarSquareEx\DLL\SquareExDLL\x64\Release\SquareExDLL.dll
