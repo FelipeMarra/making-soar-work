@@ -11,10 +11,10 @@ Using the C# sml directly inside unity, or via a C# DLL will crash unity if you 
 > TODO
 
 # ATENTION!!!: THE FOLLOWING IS A WORK IN PROGRESS. THIS DOC FOR NOW IS ONLY A PLANNING. NOT IMPLEMENTED YET!!!
-# /UnitySoarCubeEx
-> The following will explain the UnitySoarCubeEx.
+# /UnitySoarSquareEx
+> The following will explain the UnitySoarSquareEx.
 ## The agent
-The agent will be a simple cube. The cube can rotate and move in one of the for directions. Rotation and move will be allowd to execute in parallel, but the cube will be locked to move in only one direction at a time. When aproaching the screen berders the cube will be blocked to continue in that direction. 
+The agent will be a simple square. The square can rotate and move in one of the for directions. Rotation and move will be allowd to execute in parallel, but the square will be locked to move in only one direction at a time. When aproaching the screen berders the square will be blocked to continue in that direction. 
 
 ## Integration Architecture
 ### Unity
