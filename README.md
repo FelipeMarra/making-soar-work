@@ -14,7 +14,7 @@ Using the C# sml directly inside unity, or via a C# DLL will crash unity if you 
 # /UnitySoarCubeEx
 > The following will explain the UnitySoarCubeEx.
 ## The agent
-The agent will be a simple cube. The cube can rotate or move in one of the for directions. Rotation and move will be allowd to execute in parallel, but the cube will be locked to move in only one direction at a time. When aproaching the screen berders the cube will be blocked to continue in that direction. 
+The agent will be a simple cube. The cube can rotate and move in one of the for directions. Rotation and move will be allowd to execute in parallel, but the cube will be locked to move in only one direction at a time. When aproaching the screen berders the cube will be blocked to continue in that direction. 
 
 ## Integration Architecture
 ### Unity
@@ -54,7 +54,7 @@ The actions will be sent through events. The events will use the `<action> ^stat
       ^seconds 1-5
       ^status completed (or this WME is non existent)
     ^move
-      ^units << 10-500 >>
-      ^seconds << 1-5 >>
+      ^units 10-500
+      ^seconds 1-5
       ^status completed (or this WME is non existent)
  ```
