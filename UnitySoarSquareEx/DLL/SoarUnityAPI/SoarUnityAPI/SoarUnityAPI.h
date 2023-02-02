@@ -7,7 +7,7 @@
 #endif
 
 extern "C" {
-	SOARUNITYAPI_API int createSoarKernel();
+	SOARUNITYAPI_API sml::Kernel* createSoarKernel();
 
-	SOARUNITYAPI_API int createSoarAgent(const char*);
+	SOARUNITYAPI_API sml::Agent* createSoarAgent(const char*, sml::Kernel*);
 }

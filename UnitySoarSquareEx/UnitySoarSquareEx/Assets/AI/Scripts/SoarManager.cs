@@ -1,16 +1,20 @@
+using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class SoarManager : MonoBehaviour {
     [DllImport("SoarUnityAPI")]
-    public static extern int createSoarKernel();
+    public static extern IntPtr createSoarKernel();
 
     //const char*
     [DllImport("SoarUnityAPI")]
-    public static extern int createSoarAgent(string name);
+    public static extern IntPtr createSoarAgent(string name, IntPtr kernel);
+
+    IntPtr soarKernel;
+    IntPtr squareAgent;
 
     void Start() {
-        createSoarKernel();
-        createSoarAgent("square");
+        soarKernel = createSoarKernel();
+        squareAgent = createSoarAgent("square", soarKernel);
     }
 }
