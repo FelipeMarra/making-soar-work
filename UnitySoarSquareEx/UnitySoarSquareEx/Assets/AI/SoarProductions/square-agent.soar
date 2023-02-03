@@ -1,0 +1,3 @@
+pushd square-agent
+source square-agent_source.soar
+popd

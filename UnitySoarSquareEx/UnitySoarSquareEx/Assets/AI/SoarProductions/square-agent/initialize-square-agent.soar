@@ -1,0 +1,15 @@
+sp {propose*initialize-square-agent
+   (state <s> ^superstate nil
+             -^name)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-square-agent)
+}
+
+sp {apply*initialize-square-agent
+   (state <s> ^operator <op>)
+   (<op> ^name initialize-square-agent)
+-->
+   (<s> ^name square-agent)
+}
+

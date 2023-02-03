@@ -10,4 +10,6 @@ extern "C" {
 	SOARUNITYAPI_API sml::Kernel* createSoarKernel();
 
 	SOARUNITYAPI_API sml::Agent* createSoarAgent(const char*, sml::Kernel*);
+
+	SOARUNITYAPI_API int loadSoarProductions(sml::Agent*, const char*);
 }
