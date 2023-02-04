@@ -6,11 +6,7 @@ Basically creating a DLL to interact with Soar directly using C++ works. Notice 
 
 Using the C# sml directly inside unity, or via a C# DLL will crash unity if you register for a Soar event (at least in the way I did it, maybe I've done it wrong).
 
-## Creating a DLL to use Soar & importing into Unity
-
-> In the current example there is a SoarUnityAPI.dll that creates a kernel and an agent. Also, it can pint from it's C++ code into Unity's console. The projects can already be used as a simple template.
-
-better tutorial wll be provided soon.
+> In the current example there is a SoarUnityAPI.dll that provides functions to do some of the basic stuf. Also, it can print from it's C++ code into Unity's console. The projects can already be used as a simple template.
 
 # ATENTION!!!: THE FOLLOWING IS A WORK IN PROGRESS. THIS DOC FOR NOW IS ONLY A PLANNING. NOT IMPLEMENTED YET!!!
 # /UnitySoarSquareEx
