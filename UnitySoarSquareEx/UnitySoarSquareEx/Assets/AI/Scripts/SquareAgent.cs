@@ -8,7 +8,6 @@ public class SquareAgent : MonoBehaviour {
 
     void Start() {
         Init();
-        //RegisterForEvents();
         SoarManager.registerForPrintEvent(_ptrAgent);
         SoarManager.runSelfForever(_ptrAgent);
         LoadProductions();
@@ -20,10 +19,10 @@ public class SquareAgent : MonoBehaviour {
         _ptrAgent = SoarManager.createAgent("square", _ptrKernel);
     }
 
-    private void RegisterForEvents(){
-        SoarManager.registerForPrintEvent(_ptrAgent);
-        //SoarManager.registerForProductionAddedEvent(_ptrAgent);
-    }
+    //TODO: Debug stop working for print event when it is inside other function
+    // private void RegisterForEvents(){
+    //     SoarManager.registerForPrintEvent(_ptrAgent);
+    // }
 
     private void LoadProductions(){
         SoarManager.loadProductions(_ptrAgent, Application.dataPath + "/AI/SoarProductions/square-agent/initialize-square-agent.soar");
