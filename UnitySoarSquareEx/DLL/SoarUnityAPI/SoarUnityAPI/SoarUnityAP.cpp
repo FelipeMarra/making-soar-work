@@ -94,7 +94,7 @@ int loadProductions(sml::Agent* pAgent, const char* path) {
        return -1;
     }
 
-    //cout << message << endl;
+    //cout << "loadSoarProductions: Loaded Productions" << endl;
     Debug::Log("loadSoarProductions: Loaded Productions", Color::Green);
     return 0;
 }
@@ -162,6 +162,11 @@ void runSelfTilOutput(sml::Agent* pAgent) {
     pAgent->RunSelfTilOutput();
 }
 
+void runSelfForever(sml::Agent* pAgent) {
+    pAgent->RunSelfForever();
+    //cout << "Agent Running" << endl;
+}
+
 #pragma endregion
 
 //##################### Events ######################
@@ -183,7 +188,8 @@ void printEventHandler(sml::smlPrintEventId id, void* pUserData, sml::Agent* pAg
 
     (*pTrace) += pMessage;
 
-    Debug::Log(pTrace, Color::Black);
+    //cout << "printEventHandler: " << *pTrace << endl;
+    Debug::Log(*pTrace, Color::White);
 }
 
 int registerForPrintEvent(sml::Agent* pAgent) {
@@ -191,25 +197,36 @@ int registerForPrintEvent(sml::Agent* pAgent) {
     return pAgent->RegisterForPrintEvent(sml::smlEVENT_PRINT, printEventHandler, &trace);
 }
 
-//###### Production
-void productionAddedEventHandler(smlProductionEventId id, void* pUserData, Agent* pAgent, char const* pProdName, char const* pInstantion) {
+//###### Production: TODO smlEVENT_AFTER_PRODUCTION_ADDED DONT WORK
+void productionAddedEventHandler(sml::smlProductionEventId id, void* pUserData, sml::Agent* pAgent, char const* pProdName, char const* pInstantion) {
     // In this case the user data is a string we're building up
     std::string* pTrace = (std::string*)pUserData;
 
     (*pTrace) += pProdName;
 
-    Debug::Log(pTrace, Color::Black);
+    //cout << "productionAddedEventHandler: " << *pTrace << endl;
+    Debug::Log(*pTrace, Color::White);
 }
 
 int registerForProductionAddedEvent(sml::Agent* pAgent) {
-    std::string trace = "PRINT EVENT: ";
+    std::string trace = "PROD EVENT: ";
+    //smlEVENT_AFTER_PRODUCTION_ADDED DONT WORK
     return pAgent->RegisterForProductionEvent(sml::smlEVENT_AFTER_PRODUCTION_ADDED, productionAddedEventHandler, &trace);
 }
 
 #pragma endregion
 
-//int main() {
-//    sml::Kernel* pKernel = createSoarKernel();
-//    sml::Agent* pAgent = createSoarAgent("teste", pKernel);
-//    loadSoarProductions(pAgent, "move-north.soar");
+//int main(int argc, char* argv[]) {
+//    sml::Kernel* pKernel = createKernel();
+//    sml::Agent* pAgent = createAgent("teste", pKernel);
+//
+//    //registerForProductionAddedEvent(pAgent);
+//    registerForPrintEvent(pAgent);
+//
+//    runSelfForever(pAgent);
+//
+//    loadProductions(pAgent, "C:\\Users\\felip\\Documents\\GitHub\\making-soar-work\\UnitySoarSquareEx\\DLL\\SoarUnityAPI\\x64\\Release\\initialize-square-agent.soar");
+//    loadProductions(pAgent, "C:\\Users\\felip\\Documents\\GitHub\\making-soar-work\\UnitySoarSquareEx\\DLL\\SoarUnityAPI\\x64\\Release\\move-north.soar");
+//
+//    std::cin.ignore();
 //}

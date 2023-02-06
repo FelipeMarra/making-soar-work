@@ -35,7 +35,11 @@ public class SoarManager {
     [DllImport("SoarUnityAPI")]
 	public static extern void runSelfTilOutput(IntPtr agent);
 
+    [DllImport("SoarUnityAPI")]
+	public static extern void runSelfForever(IntPtr agent);
+
 	//##################### Events ######################
+    //TODO: Show text on the screen instead of printing int the console due to formating
     [DllImport("SoarUnityAPI")]
 	public static extern int registerForPrintEvent(IntPtr agent);
 

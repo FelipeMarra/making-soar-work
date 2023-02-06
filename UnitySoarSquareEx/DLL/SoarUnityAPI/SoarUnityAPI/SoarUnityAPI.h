@@ -31,7 +31,10 @@ extern "C" {
 	//##################### Run Agent ######################
 	SOARUNITYAPI_API void runSelfTilOutput(sml::Agent*);
 
+	SOARUNITYAPI_API void runSelfForever(sml::Agent*);
+
 	//##################### Events ######################
 	SOARUNITYAPI_API int registerForPrintEvent(sml::Agent*);
+
 	SOARUNITYAPI_API int registerForProductionAddedEvent(sml::Agent*);
 }
