@@ -9,9 +9,9 @@ public class SquareAgent : MonoBehaviour {
     void Start() {
         Init();
         SoarManager.registerForPrintEvent(_ptrAgent);
+        SoarManager.loadProductions(_ptrAgent, Application.dataPath + "/AI/SoarProductions/square-agent.soar");
+        CreateBaseInputWMEs();
         SoarManager.runSelfForever(_ptrAgent);
-        LoadProductions();
-        //CreateBaseInputWMEs();
     }
 
     private void Init() {
@@ -23,11 +23,6 @@ public class SquareAgent : MonoBehaviour {
     // private void RegisterForEvents(){
     //     SoarManager.registerForPrintEvent(_ptrAgent);
     // }
-
-    private void LoadProductions(){
-        SoarManager.loadProductions(_ptrAgent, Application.dataPath + "/AI/SoarProductions/square-agent/initialize-square-agent.soar");
-        SoarManager.loadProductions(_ptrAgent, Application.dataPath + "/AI/SoarProductions/square-agent/move-north.soar");
-    }
 
     void CreateBaseInputWMEs(){
         IntPtr inputId = SoarManager.getInputLink(_ptrAgent);
