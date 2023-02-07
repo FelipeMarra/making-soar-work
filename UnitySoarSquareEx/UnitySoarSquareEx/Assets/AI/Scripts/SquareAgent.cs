@@ -1,5 +1,8 @@
 using System;
 using UnityEngine;
+using System.Runtime.InteropServices;
+using static SoarManager;
+using static SoarEvents;
 
 public class SquareAgent : MonoBehaviour {
 
@@ -8,30 +11,37 @@ public class SquareAgent : MonoBehaviour {
 
     void Start() {
         Init();
-        SoarManager.registerForPrintEvent(_ptrAgent);
+
+        GCHandle userData = GCHandle.Alloc("PRINT EVENT: ");
+        registerForPrintEvent(_ptrAgent, smlPrintEventId.smlEVENT_PRINT, PrintEventCallback, GCHandle.ToIntPtr(userData));
+
         CreateBaseInputWMEs();
-        SoarManager.loadProductions(_ptrAgent, Application.dataPath + "/AI/SoarProductions/square-agent.soar");
-        SoarManager.runSelfForever(_ptrAgent);
+        loadProductions(_ptrAgent, Application.dataPath + "/AI/SoarProductions/square-agent.soar");
+        runSelfForever(_ptrAgent);
+
+        userData.Free();
+
         Debug.Log("<color='red'>SOAR STOPED</color>");
     }
 
     private void Init() {
-        _ptrKernel = SoarManager.createKernel();
-        SoarManager.setAutoCommit(_ptrKernel, false);
-        _ptrAgent = SoarManager.createAgent("square", _ptrKernel);
+        _ptrKernel = createKernel();
+        setAutoCommit(_ptrKernel, false);
+        _ptrAgent = createAgent("square", _ptrKernel);
+    }
+
+    
+    static void PrintEventCallback(smlPrintEventId eventID, IntPtr userDataPtr, IntPtr agentPtr, string message) {
+        string userData = (string)((GCHandle)userDataPtr).Target;
+        Debug.Log(userData + message);
     }
 
     void CreateBaseInputWMEs(){
-        IntPtr inputId = SoarManager.getInputLink(_ptrAgent);
-        IntPtr squareId = SoarManager.createIdWME(_ptrAgent, inputId, "square");
-        IntPtr positionId = SoarManager.createIdWME(_ptrAgent, squareId, "position");
-        IntPtr xId = SoarManager.createFloatWME(_ptrAgent, positionId, "x", transform.position.x);
-        IntPtr yId = SoarManager.createFloatWME(_ptrAgent, positionId, "y", transform.position.y);
-        SoarManager.commit(_ptrAgent);
+        IntPtr inputId = getInputLink(_ptrAgent);
+        IntPtr squareId = createIdWME(_ptrAgent, inputId, "square");
+        IntPtr positionId = createIdWME(_ptrAgent, squareId, "position");
+        IntPtr xId = createFloatWME(_ptrAgent, positionId, "x", transform.position.x);
+        IntPtr yId = createFloatWME(_ptrAgent, positionId, "y", transform.position.y);
+        commit(_ptrAgent);
     }
-
-    //TODO: Debug stop working for print event when it is inside other function
-    // private void RegisterForEvents(){
-    //     SoarManager.registerForPrintEvent(_ptrAgent);
-    // }
 }

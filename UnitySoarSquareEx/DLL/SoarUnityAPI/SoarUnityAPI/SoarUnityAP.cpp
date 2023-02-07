@@ -185,20 +185,8 @@ void runSelfForever(sml::Agent* pAgent) {
 * 
 * @returns A unique ID for this callback (used to unregister the callback later)
 *************************************************************/
-void printEventHandler(sml::smlPrintEventId id, void* pUserData, sml::Agent* pAgent, char const* pMessage)
-{
-    // In this case the user data is a string we're building up
-    std::string* pTrace = (std::string*)pUserData;
-
-    (*pTrace) += pMessage;
-
-    //cout << "printEventHandler: " << *pTrace << endl;
-    Debug::Log(*pTrace, Color::White);
-}
-
-int registerForPrintEvent(sml::Agent* pAgent) {
-    std::string trace = "PRINT EVENT: ";
-    return pAgent->RegisterForPrintEvent(sml::smlEVENT_PRINT, printEventHandler, &trace);
+int registerForPrintEvent(sml::Agent* pAgent, sml::smlPrintEventId id, sml::PrintEventHandler handler, void* pUserData, bool ignoreOwnEchos = true, bool addToBack = true) {
+    return pAgent->RegisterForPrintEvent(id, handler, pUserData, ignoreOwnEchos, addToBack);
 }
 
 //###### Production: TODO smlEVENT_AFTER_PRODUCTION_ADDED DONT WORK
