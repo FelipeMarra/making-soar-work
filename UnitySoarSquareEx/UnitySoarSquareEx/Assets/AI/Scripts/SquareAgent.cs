@@ -13,7 +13,7 @@ public class SquareAgent : MonoBehaviour {
     private List<EventData> events = new List<EventData>();
 
     void Start() {
-        Init();
+        InitAgent();
 
         RegisterForEvents();
 
@@ -28,7 +28,7 @@ public class SquareAgent : MonoBehaviour {
         Debug.Log("<color='red'>SOAR STOPED</color>");
     }
 
-    private void Init() {
+    private void InitAgent() {
         _ptrKernel = createKernel();
         setAutoCommit(_ptrKernel, false);
         _ptrAgent = createAgent("square", _ptrKernel);
