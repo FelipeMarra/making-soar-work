@@ -189,6 +189,20 @@ int registerForPrintEvent(sml::Agent* pAgent, sml::smlPrintEventId id, sml::Prin
     return pAgent->RegisterForPrintEvent(id, handler, pUserData, ignoreOwnEchos, addToBack);
 }
 
+bool unregisterForPrintEvent(sml::Agent* pAgent, int callbackId) {
+    return pAgent->UnregisterForPrintEvent(callbackId);
+}
+
+//###### Update
+int registerForUpdateEvent(sml::Kernel* pKernel, sml::smlUpdateEventId id, sml::UpdateEventHandler handler, void* pUserData, bool addToBack = true) {
+    return pKernel->RegisterForUpdateEvent(id, handler, pUserData, addToBack);
+}
+
+bool unregisterForUpdateEvent(sml::Kernel* pKernel, int callbackId) {
+    return pKernel->UnregisterForUpdateEvent(callbackId);
+}
+
+
 //###### Production: TODO smlEVENT_AFTER_PRODUCTION_ADDED DONT WORK
 //void productionAddedEventHandler(sml::smlProductionEventId id, void* pUserData, sml::Agent* pAgent, char const* pProdName, char const* pInstantion) {
 //    // In this case the user data is a string we're building up

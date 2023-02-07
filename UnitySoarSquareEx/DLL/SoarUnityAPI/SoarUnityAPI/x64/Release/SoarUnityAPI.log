@@ -1,2 +1,10 @@
-﻿  SoarUnityAPI.vcxproj -> C:\Users\felip\Documents\GitHub\making-soar-work\UnitySoarSquareEx\DLL\SoarUnityAPI\x64\Release\SoarUnityAPI.dll
-  0 arquivo(s) copiado(s)
+﻿  SoarUnityAP.cpp
+     Creating library C:\Users\felip\Documents\GitHub\making-soar-work\UnitySoarSquareEx\DLL\SoarUnityAPI\x64\Release\SoarUnityAPI.lib and object C:\Users\felip\Documents\GitHub\making-soar-work\UnitySoarSquareEx\DLL\SoarUnityAPI\x64\Release\SoarUnityAPI.exp
+  Generating code
+  2 of 2130 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  SoarUnityAPI.vcxproj -> C:\Users\felip\Documents\GitHub\making-soar-work\UnitySoarSquareEx\DLL\SoarUnityAPI\x64\Release\SoarUnityAPI.dll
+  C:\Users\felip\Documents\GitHub\making-soar-work\UnitySoarSquareEx\DLL\SoarUnityAPI\x64\Release\SoarUnityAPI.dll
+  1 arquivo(s) copiado(s)

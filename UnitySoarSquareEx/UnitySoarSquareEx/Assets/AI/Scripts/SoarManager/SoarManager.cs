@@ -39,6 +39,7 @@ public class SoarManager {
 
     [DllImport("SoarUnityAPI")]
 	public static extern void runSelfForever(IntPtr agent);
+
     //##################### Debug ######################
     //TODO not working
     // [DllImport("SoarUnityAPI")]
