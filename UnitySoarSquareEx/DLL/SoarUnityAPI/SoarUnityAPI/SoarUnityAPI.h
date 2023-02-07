@@ -28,6 +28,8 @@ extern "C" {
 	
 	SOARUNITYAPI_API void commit(sml::Agent*);
 
+	SOARUNITYAPI_API void setAutoCommit(sml::Kernel*, bool);
+
 	//##################### Run Agent ######################
 	SOARUNITYAPI_API void runSelfTilOutput(sml::Agent*);
 
@@ -36,5 +38,10 @@ extern "C" {
 	//##################### Events ######################
 	SOARUNITYAPI_API int registerForPrintEvent(sml::Agent*);
 
-	SOARUNITYAPI_API int registerForProductionAddedEvent(sml::Agent*);
+	//SOARUNITYAPI_API int registerForProductionAddedEvent(sml::Agent*);
+
+	//##################### Debug ######################
+	//SOARUNITYAPI_API bool spawnDebugger(sml::Agent*, int, const char*);
+
+	//SOARUNITYAPI_API bool killDebugger(sml::Agent*);
 }

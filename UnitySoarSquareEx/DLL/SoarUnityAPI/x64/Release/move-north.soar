@@ -2,12 +2,12 @@
 # Propose*move-north:
 # If I exist, then propose the move-north operator.
 sp {propose*move-north
-    (state <s> ^io.input-link.square <s>)
-    (<s> ^x <x> ^y <y>)
+    (state <s> ^io.input-link.square.position <position>)
+    (<position> ^x <x> ^y <y>)
 -->
     (<s> ^operator <o> +)
     (<o> ^name move-north)
-    (write |Proposed North|)
+    (write |Proposed North x:|<x>| y:|<y>||)
 }
 
 # Apply*move-north:

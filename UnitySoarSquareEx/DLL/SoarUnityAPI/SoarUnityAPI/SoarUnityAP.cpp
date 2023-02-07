@@ -148,6 +148,10 @@ void commit(sml::Agent* pAgent) {
     pAgent->Commit();
 }
 
+void setAutoCommit(sml::Kernel* pKernel, bool state) {
+    pKernel->SetAutoCommit(state);
+}
+
 #pragma endregion
 
 //##################### Run Agent ######################
@@ -198,35 +202,87 @@ int registerForPrintEvent(sml::Agent* pAgent) {
 }
 
 //###### Production: TODO smlEVENT_AFTER_PRODUCTION_ADDED DONT WORK
-void productionAddedEventHandler(sml::smlProductionEventId id, void* pUserData, sml::Agent* pAgent, char const* pProdName, char const* pInstantion) {
-    // In this case the user data is a string we're building up
-    std::string* pTrace = (std::string*)pUserData;
-
-    (*pTrace) += pProdName;
-
-    //cout << "productionAddedEventHandler: " << *pTrace << endl;
-    Debug::Log(*pTrace, Color::White);
-}
-
-int registerForProductionAddedEvent(sml::Agent* pAgent) {
-    std::string trace = "PROD EVENT: ";
-    //smlEVENT_AFTER_PRODUCTION_ADDED DONT WORK
-    return pAgent->RegisterForProductionEvent(sml::smlEVENT_AFTER_PRODUCTION_ADDED, productionAddedEventHandler, &trace);
-}
+//void productionAddedEventHandler(sml::smlProductionEventId id, void* pUserData, sml::Agent* pAgent, char const* pProdName, char const* pInstantion) {
+//    // In this case the user data is a string we're building up
+//    std::string* pTrace = (std::string*)pUserData;
+//
+//    (*pTrace) += pProdName;
+//
+//    //cout << "productionAddedEventHandler: " << *pTrace << endl;
+//    Debug::Log(*pTrace, Color::White);
+//}
+// 
+////NOT WORKING:
+//int registerForProductionAddedEvent(sml::Agent* pAgent) {
+//    std::string trace = "PROD EVENT: ";
+//    //smlEVENT_AFTER_PRODUCTION_ADDED DONT WORK
+//    return pAgent->RegisterForProductionEvent(sml::smlEVENT_AFTER_PRODUCTION_ADDED, productionAddedEventHandler, &trace);
+//}
 
 #pragma endregion
 
+//##################### Debug ######################
+#pragma region Debug
+//NOT WORKING:
+//bool spawnDebugger(sml::Agent* pAgent, int port, const char* jarpath) {
+//    if (port == -1) {
+//        port = sml::Kernel::kDefaultSMLPort;
+//    }
+//
+//    Debug::Log(port, Color::Blue);
+//    Debug::Log(jarpath, Color::Blue);
+//
+//    //cout << port<< " " << jarpath <<endl;
+//
+//    return pAgent->SpawnDebugger(port=port, jarpath=jarpath);
+//}
+
+//bool killDebugger(sml::Agent* pAgent) {
+//    return pAgent->KillDebugger();
+//}
+#pragma endregion
+
+//##################### Test ######################
+#pragma region Test
+//Identifier* inputId;
+//
+//void runEventHandler(smlRunEventId id, void* pUserData, Agent* pAgent, smlPhase phase) {
+//    char cmd[20];
+//    strcpy_s(cmd, "print --depth 3 ");
+//    strcat_s(cmd, inputId->GetIdentifierName());
+//
+//    //cout << cmd << endl;
+//    const char* answer = pAgent->ExecuteCommandLine(cmd);
+//    //cout << answer << endl;
+//}
+//
 //int main(int argc, char* argv[]) {
 //    sml::Kernel* pKernel = createKernel();
 //    sml::Agent* pAgent = createAgent("teste", pKernel);
 //
+//    //NOT WORKING:
+//    //spawnDebugger(pAgent, -1, "C:\\Users\\felip\\Desktop\\SOAR\\SoarTutorial_9.6.1-Multiplatform\\bin\\SoarJavaDebugger.jar");
+//    
+//    //NOT WORKING:
 //    //registerForProductionAddedEvent(pAgent);
+//
 //    registerForPrintEvent(pAgent);
 //
-//    runSelfForever(pAgent);
+//    inputId = getInputLink(pAgent);
+//    Identifier* squareId = createIdWME(pAgent, inputId, "square");
+//    Identifier* positionId = createIdWME(pAgent, squareId, "position");
+//    FloatElement* xId = createFloatWME(pAgent, positionId, "x", 1.5);
+//    FloatElement* yId = createFloatWME(pAgent, positionId, "y", 1.5);
+//    commit(pAgent);
 //
 //    loadProductions(pAgent, "C:\\Users\\felip\\Documents\\GitHub\\making-soar-work\\UnitySoarSquareEx\\DLL\\SoarUnityAPI\\x64\\Release\\initialize-square-agent.soar");
 //    loadProductions(pAgent, "C:\\Users\\felip\\Documents\\GitHub\\making-soar-work\\UnitySoarSquareEx\\DLL\\SoarUnityAPI\\x64\\Release\\move-north.soar");
+//    
+//    //std::string trace = "RUN EVENT: ";
+//    //pAgent->RegisterForRunEvent(smlEVENT_BEFORE_DECISION_CYCLE, runEventHandler, &trace);
+//
+//    runSelfForever(pAgent);
 //
 //    std::cin.ignore();
 //}
+#pragma endregion

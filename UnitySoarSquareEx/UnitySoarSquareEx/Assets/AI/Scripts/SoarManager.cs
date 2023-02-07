@@ -30,6 +30,8 @@ public class SoarManager {
 
     [DllImport("SoarUnityAPI")]
 	public static extern void commit(IntPtr agent);
+    [DllImport("SoarUnityAPI")]
+    public static extern  void setAutoCommit(IntPtr Kernel, bool state);
 
 	//##################### Run Agent ######################
     [DllImport("SoarUnityAPI")]
@@ -43,6 +45,14 @@ public class SoarManager {
     [DllImport("SoarUnityAPI")]
 	public static extern int registerForPrintEvent(IntPtr agent);
 
-    [DllImport("SoarUnityAPI")]
-	public static extern int registerForProductionAddedEvent(IntPtr agent);
+    //TODO not working
+    // [DllImport("SoarUnityAPI")]
+	// public static extern int registerForProductionAddedEvent(IntPtr agent);
+	
+    //##################### Debug ######################
+    //TODO not working
+    // [DllImport("SoarUnityAPI")]
+    // public static extern bool spawnDebugger(IntPtr agent, int port=-1, string jarpath="");
+    // [DllImport("SoarUnityAPI")]
+	// public static extern bool killDebugger(IntPtr agent);
 }
