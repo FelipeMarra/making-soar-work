@@ -12,28 +12,37 @@ extern "C" {
 
 	SOARUNITYAPI_API sml::Agent* createAgent(const char*, sml::Kernel*);
 
-	SOARUNITYAPI_API int loadProductions(sml::Agent*, const char*);
+	SOARUNITYAPI_API int loadProductions(sml::Agent*, const char*, bool);
 
 	//##################### Manage IO ######################
 	SOARUNITYAPI_API sml::Identifier* getInputLink(sml::Agent*);
 
-	//##################### Manage WMEs ######################
-	SOARUNITYAPI_API sml::Identifier* createIdWME(sml::Agent*, sml::Identifier*, const char*);
+	SOARUNITYAPI_API sml::Identifier* getOutputLink(sml::Agent* pAgent);
 
+	//##################### Manage WMEs ######################
 	SOARUNITYAPI_API sml::StringElement* createStringWME(sml::Agent*, sml::Identifier*, const char*, const char*);
 	
 	SOARUNITYAPI_API sml::IntElement* createIntWME(sml::Agent*, sml::Identifier*, const char*, long long);
 	
 	SOARUNITYAPI_API sml::FloatElement* createFloatWME(sml::Agent*, sml::Identifier*, const char*, double);
+
+	SOARUNITYAPI_API sml::Identifier* createIdWME(sml::Agent*, sml::Identifier*, const char*);
 	
-	SOARUNITYAPI_API void commit(sml::Agent*);
+	SOARUNITYAPI_API sml::Identifier* createSharedIdWME(sml::Agent*, sml::Identifier*, char const*, sml::Identifier*);
+	
+	SOARUNITYAPI_API void updateStringWME(sml::Agent*, sml::StringElement*, char const*);
 
-	SOARUNITYAPI_API void setAutoCommit(sml::Kernel*, bool);
+	SOARUNITYAPI_API void updateIntWME(sml::Agent*, sml::IntElement*, long long);
 
-	//##################### Run Agent ######################
-	SOARUNITYAPI_API void runSelfTilOutput(sml::Agent*);
+	SOARUNITYAPI_API void updateFloatWME(sml::Agent*, sml::FloatElement*, double);
 
-	SOARUNITYAPI_API void runSelfForever(sml::Agent*);
+	SOARUNITYAPI_API void setBlinkIfNoChange(sml::Agent*, bool);
+
+	SOARUNITYAPI_API bool isBlinkIfNoChange(sml::Agent*);
+
+	SOARUNITYAPI_API bool destroyWME(sml::Agent*, sml::WMElement*);
+
+	SOARUNITYAPI_API char const* initSoar(sml::Agent*);
 
 	//##################### Events ######################
 	//###### Print
@@ -46,7 +55,18 @@ extern "C" {
 
 	SOARUNITYAPI_API bool unregisterForUpdateEvent(sml::Kernel*, int);
 
-	//SOARUNITYAPI_API int registerForProductionAddedEvent(sml::Agent*);
+	SOARUNITYAPI_API void commit(sml::Agent*);
+
+	SOARUNITYAPI_API bool isCommitRequired(sml::Agent*);
+
+	SOARUNITYAPI_API void setAutoCommit(sml::Kernel*, bool);
+
+	//##################### Run Agent ######################
+	SOARUNITYAPI_API char const* runSelf(sml::Agent*, int, sml::smlRunStepSize);
+
+	SOARUNITYAPI_API void runSelfForever(sml::Agent*);
+
+	SOARUNITYAPI_API void runSelfTilOutput(sml::Agent*);
 
 	//##################### Debug ######################
 	//SOARUNITYAPI_API bool spawnDebugger(sml::Agent*, int, const char*);

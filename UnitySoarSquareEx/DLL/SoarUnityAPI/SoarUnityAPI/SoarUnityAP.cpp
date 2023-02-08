@@ -13,14 +13,6 @@ using namespace std;
 //######## Manage Kernel & Agent & Productions #######################
 #pragma region Initialization
 
-/*************************************************************
-*@brief Prints a potMessage plus the last error description 
-* (use pKernel or pAgent ->GetLastErrorDescription) into Unity's console
-* 
-* @param pKernel: The kernel that will be used to get the error
-* 
-* @param message: Optional message shown before the error
-*************************************************************/
 void printError(const char* soarMessage, const char* optMessage = "") {
     char errorMessage[150];
     strcat_s(errorMessage, optMessage);
@@ -30,12 +22,6 @@ void printError(const char* soarMessage, const char* optMessage = "") {
     Debug::Log(errorMessage, Color::Red);
 }
 
-
-/*************************************************************
-*@brief Initializes Soar by creating a kernel in a new thread.
-*
-*@returns A new kernel object which is used to communicate with the kernel (or NULL if an error occured).
-*************************************************************/
 sml::Kernel* createKernelInNewThread() {
     // Create an instance of the Soar kernel in our process
     sml::Kernel* pKernel = Kernel::CreateKernelInNewThread();
@@ -52,16 +38,6 @@ sml::Kernel* createKernelInNewThread() {
     return pKernel;
 }
 
-/*************************************************************
-*@brief Creates a agent inside the specified kernel, with the specified name
-*
-* @param name: The agent's name
-* 
-* @param pKernel: The kernel that will be used to create the agent
-* 
-*@returns A pointer to the agent(or NULL if not found).This object
-* is owned by the kernela will be destroyed when the kernel is destroyed.
-*************************************************************/
 sml::Agent* createAgent(const char* name, sml::Kernel* pKernel) {
     sml::Agent* pAgent = pKernel->CreateAgent(name);
 
@@ -77,17 +53,8 @@ sml::Agent* createAgent(const char* name, sml::Kernel* pKernel) {
     return pAgent;
 }
 
-/*************************************************************
-*@brief Loads Soar producitons from file into agnet
-*
-* @param pAgent: The agent's pointer
-* 
-* @param path: The productions file location
-*
-*@returns -1 for error and 0 otherwise
-*************************************************************/
-int loadProductions(sml::Agent* pAgent, const char* path) {
-    bool loaded = pAgent->LoadProductions(path);
+int loadProductions(sml::Agent* pAgent, const char* path, bool echoResults) {
+    bool loaded = pAgent->LoadProductions(path, echoResults);
 
    if (!loaded || pAgent->HadError()) {
        printError(pAgent->GetLastErrorDescription(), "loadSoarProductions: ");
@@ -103,16 +70,12 @@ int loadProductions(sml::Agent* pAgent, const char* path) {
 
 //##################### Manage IO ######################
 #pragma region IO
-
-/*************************************************************
-*@brief Get the agent's io.input-link identifier
-*
-* @param pAgent: The agent's pointer
-*
-*@returns A pointer (Identifier*) to the identifier of the input-link
-*************************************************************/
 sml::Identifier* getInputLink(sml::Agent* pAgent) {
    return pAgent->GetInputLink();
+}
+
+sml::Identifier* getOutputLink(sml::Agent* pAgent) {
+    return pAgent->GetOutputLink();
 }
 
 #pragma endregion
@@ -120,32 +83,60 @@ sml::Identifier* getInputLink(sml::Agent* pAgent) {
 //##################### Manage WMEs ######################
 #pragma region WMEs
 
-/*************************************************************
-*@brief Create a string WME [pAtribute] with a identifier as the value. 
-* Output note: the agent can move it anytime, so may cause seg fault to use the [Identifier*]
-*
-*@param pAgent: The agent's pointer
-*
-*@returns A pointer [Identifier*] to the identifier of the input-link
-*************************************************************/
-sml::Identifier* createIdWME(sml::Agent* pAgent, sml::Identifier* parent, const char* pAtribute) {
-    return pAgent->CreateIdWME(parent, pAtribute);
+sml::StringElement* createStringWME(sml::Agent* pAgent, sml::Identifier* parent, const char* pAttribute, const char* pValue) {
+    return pAgent->CreateStringWME(parent, pAttribute, pValue);
 }
 
-sml::StringElement* createStringWME(sml::Agent* pAgent, sml::Identifier* parent, const char* pAtribute, const char* pValue) {
-    return pAgent->CreateStringWME(parent, pAtribute, pValue);
+sml::IntElement* createIntWME(sml::Agent* pAgent, sml::Identifier* parent, const char* pAttribute, long long value) {
+    return pAgent->CreateIntWME(parent, pAttribute, value);
 }
 
-sml::IntElement* createIntWME(sml::Agent* pAgent, sml::Identifier* parent, const char* pAtribute, long long value) {
-    return pAgent->CreateIntWME(parent, pAtribute, value);
+sml::FloatElement* createFloatWME(sml::Agent* pAgent, sml::Identifier* parent, const char* pAttribute, double value) {
+    return pAgent->CreateFloatWME(parent, pAttribute, value);
 }
 
-sml::FloatElement* createFloatWME(sml::Agent* pAgent, sml::Identifier* parent, const char* pAtribute, double value) {
-    return pAgent->CreateFloatWME(parent, pAtribute, value);
+sml::Identifier* createIdWME(sml::Agent* pAgent, sml::Identifier* parent, const char* pAttribute) {
+    return pAgent->CreateIdWME(parent, pAttribute);
+}
+
+sml::Identifier* createSharedIdWME(sml::Agent* pAgent, sml::Identifier* parent, char const* pAttribute, sml::Identifier* pSharedValue) {
+    return pAgent->CreateSharedIdWME(parent, pAttribute, pSharedValue);
+}
+
+void updateStringWME(sml::Agent* pAgent, sml::StringElement* pWME, char const* pValue) {
+    pAgent->Update(pWME, pValue);
+}
+
+void updateIntWME(sml::Agent* pAgent, sml::IntElement* pWME, long long value) {
+    pAgent->Update(pWME, value);
+}
+
+void updateFloatWME(sml::Agent* pAgent, sml::FloatElement* pWME, double value) {
+    pAgent->Update(pWME, value);
+}
+
+void setBlinkIfNoChange(sml::Agent* pAgent, bool state) {
+    pAgent->SetBlinkIfNoChange(state);
+}
+
+bool isBlinkIfNoChange(sml::Agent* pAgent) {
+    return pAgent->IsBlinkIfNoChange();
+}
+
+bool destroyWME(sml::Agent* pAgent, sml::WMElement* pWME) {
+     return pAgent->DestroyWME(pWME);
+}
+
+char const* initSoar(sml::Agent* pAgent) {
+    return pAgent->InitSoar();
 }
 
 void commit(sml::Agent* pAgent) {
     pAgent->Commit();
+}
+
+bool isCommitRequired(sml::Agent* pAgent) {
+    return pAgent->IsCommitRequired();
 }
 
 void setAutoCommit(sml::Kernel* pKernel, bool state) {
@@ -156,19 +147,17 @@ void setAutoCommit(sml::Kernel* pKernel, bool state) {
 
 //##################### Run Agent ######################
 #pragma region Run
-
-/*************************************************************
-*@brief Run Soar until it generates output or 15 decision cycles have passed
-*
-* @param pAgent: The agent's pointer
-*************************************************************/
-void runSelfTilOutput(sml::Agent* pAgent) {
-    pAgent->RunSelfTilOutput();
+char const* runSelf(sml::Agent* pAgent, int numberSteps, sml::smlRunStepSize stepSize = sml_DECIDE) {
+    return pAgent->RunSelf(numberSteps, stepSize);
 }
 
 void runSelfForever(sml::Agent* pAgent) {
     pAgent->RunSelfForever();
     //cout << "Agent Running" << endl;
+}
+
+void runSelfTilOutput(sml::Agent* pAgent) {
+    pAgent->RunSelfTilOutput();
 }
 
 #pragma endregion
@@ -178,13 +167,6 @@ void runSelfForever(sml::Agent* pAgent) {
 // TODO: only create register events functions here and use the C# sml example to write the calls inside Unity
 
 //###### Print
-/*************************************************************
-*@brief Register for an "PrintEvent".
-*
-* @param pAgent: The agent's pointer
-* 
-* @returns A unique ID for this callback (used to unregister the callback later)
-*************************************************************/
 int registerForPrintEvent(sml::Agent* pAgent, sml::smlPrintEventId id, sml::PrintEventHandler handler, void* pUserData, bool ignoreOwnEchos = true, bool addToBack = true) {
     return pAgent->RegisterForPrintEvent(id, handler, pUserData, ignoreOwnEchos, addToBack);
 }
