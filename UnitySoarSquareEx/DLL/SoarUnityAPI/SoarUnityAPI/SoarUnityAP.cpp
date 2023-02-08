@@ -36,7 +36,7 @@ void printError(const char* soarMessage, const char* optMessage = "") {
 *
 *@returns A new kernel object which is used to communicate with the kernel (or NULL if an error occured).
 *************************************************************/
-sml::Kernel* createKernel() {
+sml::Kernel* createKernelInNewThread() {
     // Create an instance of the Soar kernel in our process
     sml::Kernel* pKernel = Kernel::CreateKernelInNewThread();
 
@@ -136,12 +136,12 @@ sml::StringElement* createStringWME(sml::Agent* pAgent, sml::Identifier* parent,
     return pAgent->CreateStringWME(parent, pAtribute, pValue);
 }
 
-sml::IntElement* createIntWME(sml::Agent* pAgent, sml::Identifier* parent, const char* pAtribute, long long pValue) {
-    return pAgent->CreateIntWME(parent, pAtribute, pValue);
+sml::IntElement* createIntWME(sml::Agent* pAgent, sml::Identifier* parent, const char* pAtribute, long long value) {
+    return pAgent->CreateIntWME(parent, pAtribute, value);
 }
 
-sml::FloatElement* createFloatWME(sml::Agent* pAgent, sml::Identifier* parent, const char* pAtribute, double pValue) {
-    return pAgent->CreateFloatWME(parent, pAtribute, pValue);
+sml::FloatElement* createFloatWME(sml::Agent* pAgent, sml::Identifier* parent, const char* pAtribute, double value) {
+    return pAgent->CreateFloatWME(parent, pAtribute, value);
 }
 
 void commit(sml::Agent* pAgent) {

@@ -2,36 +2,43 @@ using System;
 using UnityEngine;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
-using static SoarManager;
-using static SoarEvents;
+using smlUnity;
 
+/// <summary>
+/// To send a object as a IntPtr in the userData parameters use:
+/// GCHandle data = GCHandle.Alloc(YOUR_OBJECT);
+/// IntPtr dataPtr = GCHandle.ToIntPtr(userData);
+///
+/// A pointer allocated in that way can than be type casted like:
+/// YOUR_OBJECT data = (YOUR_OBJECT_TYPE)((GCHandle)userDataPtr).Target;
+///
+/// And don't forget to free it afeter use: data.Free()
+/// </summary>
 public class SquareAgent : MonoBehaviour {
 
-    private IntPtr _ptrKernel;
-    private IntPtr _ptrAgent;
+    private Kernel _kernel;
+    private Agent _agent;
 
     private List<EventData> events = new List<EventData>();
 
     void Start() {
-        InitAgent();
+        _kernel = new Kernel();
+
+        _kernel.SetAutoCommit(false);
+
+        _agent = new Agent("square", _kernel);
 
         RegisterForEvents();
 
         CreateBaseInputWMEs();
 
-        loadProductions(_ptrAgent, Application.dataPath + "/AI/SoarProductions/square-agent.soar");
+        _agent.LoadProductions(Application.dataPath + "/AI/SoarProductions/square-agent.soar");
 
-        runSelfForever(_ptrAgent);
+        _agent.RunSelfForever();
 
-        UnregisterForEvents(events, _ptrAgent, _ptrKernel);
+        SoarUtils.UnregisterForEvents(events, _agent, _kernel);
 
         Debug.Log("<color='red'>SOAR STOPED</color>");
-    }
-
-    private void InitAgent() {
-        _ptrKernel = createKernel();
-        setAutoCommit(_ptrKernel, false);
-        _ptrAgent = createAgent("square", _ptrKernel);
     }
 
 //##################### Events ######################
@@ -49,23 +56,23 @@ public class SquareAgent : MonoBehaviour {
     void RegisterForEvents() {
         //Print
         GCHandle printUserData = GCHandle.Alloc("PRINT EVENT: ");
-        int printId = registerForPrintEvent(_ptrAgent, smlPrintEventId.smlEVENT_PRINT, PrintEventCallback, GCHandle.ToIntPtr(printUserData));
-        events.Add(new EventData(printUserData, printId, SoarEvents.EventType.PRINT));
+        int printId = _agent.RegisterForPrintEvent(smlPrintEventId.smlEVENT_PRINT, PrintEventCallback, GCHandle.ToIntPtr(printUserData));
+        events.Add(new EventData(printUserData, printId, smlUnity.EventType.PRINT));
 
         //Update
         GCHandle eventUserData = GCHandle.Alloc("UPDATE EVENT: ");
-        int updateId = registerForUpdateEvent(_ptrKernel, smlUpdateEventId.smlEVENT_AFTER_ALL_OUTPUT_PHASES, UpdateEventCallback, GCHandle.ToIntPtr(eventUserData));
-        events.Add(new EventData(eventUserData, updateId, SoarEvents.EventType.UPDATE));
+        int updateId = _kernel.RegisterForUpdateEvent(smlUpdateEventId.smlEVENT_AFTER_ALL_OUTPUT_PHASES, UpdateEventCallback, GCHandle.ToIntPtr(eventUserData));
+        events.Add(new EventData(eventUserData, updateId, smlUnity.EventType.UPDATE));
     }
 
 #endregion
 
     void CreateBaseInputWMEs(){
-        IntPtr inputId = getInputLink(_ptrAgent);
-        IntPtr squareId = createIdWME(_ptrAgent, inputId, "square");
-        IntPtr positionId = createIdWME(_ptrAgent, squareId, "position");
-        IntPtr xId = createFloatWME(_ptrAgent, positionId, "x", transform.position.x);
-        IntPtr yId = createFloatWME(_ptrAgent, positionId, "y", transform.position.y);
-        commit(_ptrAgent);
+        IntPtr inputId = _agent.GetInputLink();
+        IntPtr squareId = _agent.CreateIdWME(inputId, "square");
+        IntPtr positionId = _agent.CreateIdWME(squareId, "position");
+        IntPtr xId = _agent.CreateFloatWME(positionId, "x", transform.position.x);
+        IntPtr yId = _agent.CreateFloatWME(positionId, "y", transform.position.y);
+        _agent.Commit();
     }
 }

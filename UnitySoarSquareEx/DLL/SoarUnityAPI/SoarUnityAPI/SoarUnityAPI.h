@@ -8,7 +8,7 @@
 
 extern "C" {
 	//######## Manage Kernel & Agent & Productions #######################
-	SOARUNITYAPI_API sml::Kernel* createKernel();
+	SOARUNITYAPI_API sml::Kernel* createKernelInNewThread();
 
 	SOARUNITYAPI_API sml::Agent* createAgent(const char*, sml::Kernel*);
 
