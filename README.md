@@ -2,13 +2,13 @@
  > making the SOAR 9.6.1 cognitive architecture work with Unity 2021.3.14.f1
 
 ## Summary
-Basically creating a DLL to interact with Soar directly using C++ works. Notice that inside Unity both Soar and your DLLs must be in the same folder. <br> 
+Basically, creating a DLL to interact directly with Soar using C++ works. Notice that inside Unity both Soar and your DLLs must be in the same folder. <br> 
 
-Using the C# sml directly inside unity, or via a C# DLL will crash unity if you register for a Soar event (at least in the way I did it, maybe I've done it wrong).
+Using the C# sml directly inside unity, or via a C# DLL will crash Unity if you register for a Soar event (at least in the way I did it, maybe I've done it wrong).
 
-> In the current example there is a SoarUnityAPI.dll that provides functions to do some of the basic stuf. Also, it can print from it's C++ code into Unity's console. The projects can already be used as a simple template.
+> The current example provides the Agent and Kernel classes. The SoarUnity.dll exports the functions from the Soar.dll - also, it can print from it's C++ code into Unity's console -, and inside the Unity project the classes are created based on those to allow the use of Soar. They're not complete yet - the Agent one is in a more advaced stage and w/ it's functions documented. The projects can already be used as a simple template - I mean, it's better then nothing.
 
-# ATENTION!!!: THE FOLLOWING IS A WORK IN PROGRESS. THIS DOC FOR NOW IS ONLY A PLANNING. NOT IMPLEMENTED YET!!!
+# BELLOW THIS POINT THIS DOC ONLY A PLANNING.
 # /UnitySoarSquareEx
 > The following will explain the UnitySoarSquareEx.
 ## The agent
@@ -16,29 +16,6 @@ The agent will be a simple square. The square can rotate and move in one of the 
 
 ## Integration Architecture
 ### Unity
-This example runs Soar inside a <a href="https://docs.unity3d.com/Manual/JobSystem.html">Job</a>. The Job System uses multithread to enhance performance. Besides the fact that Soar is fast this examples runs one Soar Step per frame, so it makes sence to let this logic in another thread. 
-
-The high level scheme looks something like:
-
-```
-// Job
-Update:
- Input Information from the InputStack Into Soar
- Run Soar Step
- Get Output
- Call Action Events
-```
-
-```
-// Rotate/Move Event Handler
-Rotate/Move X degrees/units per second for T seconds 
- then Add status complete to this action inside the InputStack
-```
-
-![UnityXSoar_SM](https://user-images.githubusercontent.com/89817439/215845072-817ad955-adbd-4ee4-b046-d3f63c1fc878.png)
-
-
-The actions will be sent through events. The events will use the `<action> ^status complete` convention - that are used in Soar's Eaters and Tanks examples - to inform the agent that the action was completed.
 
 ### Soar 
 ```
@@ -48,11 +25,9 @@ The actions will be sent through events. The events will use the `<action> ^stat
     ^blocked << top left bottom right >>
   ^output-link
     ^rotate
-      ^degrees-per-second 10-180
-      ^seconds 1-5
+      ^direciton << left right >>
       ^status completed (or this WME is non existent)
     ^move
-      ^units 10-500
-      ^seconds 1-5
+      ^direciton << top left bottom right >>
       ^status completed (or this WME is non existent)
  ```
