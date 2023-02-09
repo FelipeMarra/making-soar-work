@@ -1,3 +1,13 @@
+# Generate a wait state rather than a state-no-change impasse.
+# Alternatively, this can be performed using rules and that might
+# be a better option depending on your situation.
+# See http://code.google.com/p/soar/wiki/CommandLineInterface#waitsnc
+#waitsnc --enable
+
+# We're going to print interesting stuff as it happens, so lets
+# turn the watch off so this is easy to see in the debugger.
+#watch 0
+
 sp {propose*initialize-square-agent
    (state <s> ^superstate nil
              -^name)

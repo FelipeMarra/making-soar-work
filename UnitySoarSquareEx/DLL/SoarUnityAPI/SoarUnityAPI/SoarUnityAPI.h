@@ -42,7 +42,7 @@ extern "C" {
 
 	SOARUNITYAPI_API bool destroyWME(sml::Agent*, sml::WMElement*);
 
-	SOARUNITYAPI_API char const* initSoar(sml::Agent*);
+	SOARUNITYAPI_API const char* initSoar(sml::Agent*);
 
 	SOARUNITYAPI_API void setOutputLinkChangeTracking(sml::Agent*, bool);
 
@@ -65,7 +65,7 @@ extern "C" {
 	SOARUNITYAPI_API void setAutoCommit(sml::Kernel*, bool);
 
 	//##################### Identifier ######################
-	SOARUNITYAPI_API char const* getCommandName(sml::Identifier*);
+	SOARUNITYAPI_API const char* getCommandName(sml::Identifier*);
 
 	SOARUNITYAPI_API void addStatusComplete(sml::Identifier*);
 

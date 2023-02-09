@@ -76,7 +76,7 @@ namespace smlUnity {
         private static extern bool destroyWME(IntPtr pAgent, IntPtr pWME);
         
         [DllImport("SoarUnityAPI")]
-        private static extern string initSoar(IntPtr pAgent);
+        private static extern IntPtr initSoar(IntPtr pAgent);
 
         [DllImport("SoarUnityAPI")]
         private static extern void setOutputLinkChangeTracking(IntPtr pAgent, bool setting);
@@ -129,7 +129,6 @@ namespace smlUnity {
 
         [DllImport("SoarUnityAPI")]
         private static extern void runSelfTilOutput(IntPtr pAgent);
-
 
 #endregion
 
@@ -301,13 +300,13 @@ namespace smlUnity {
         /// removed during the last decision cycle. Dereferencing
         /// a removed WME causes a segmentation fault.
         ///</summary>
-        public void Update(IntPtr pAgent, IntPtr pWME, string value) {
+        public void Update(IntPtr pWME, string value) {
             updateStringWME(_pAgent, pWME, value);
         }
-	    public void Update(IntPtr pAgent, IntPtr pWME, long value) {
+	    public void Update(IntPtr pWME, long value) {
             updateIntWME(_pAgent, pWME, value);
         }
-	    public void Update(IntPtr pAgent, IntPtr pWME, double value) {
+	    public void Update(IntPtr pWME, double value) {
             updateFloatWME(_pAgent, pWME, value);
         }
 
@@ -317,7 +316,7 @@ namespace smlUnity {
         /// Blinking means the wme is removed and an identical wme is added,
         /// causing rules that test this wme to be rematched and to fire again.
         ///</summary>
-        public void SetBlinkIfNoChange(IntPtr pAgent, bool state) {
+        public void SetBlinkIfNoChange(bool state) {
             setBlinkIfNoChange(_pAgent, state);
         }
 
@@ -353,9 +352,10 @@ namespace smlUnity {
         /// This will also cause the output link structures stored
         /// here to be erased and the current input link to be sent over
         /// to the Soar agent for the start of its next run.
+        /// Ps: https://www.mono-project.com/docs/advanced/pinvoke/#strings-as-return-values
         ///</summary>
         public string InitSoar() {
-            return initSoar(_pAgent);
+            return Marshal.PtrToStringAnsi(initSoar(_pAgent));
         }
 
         ///<summary>

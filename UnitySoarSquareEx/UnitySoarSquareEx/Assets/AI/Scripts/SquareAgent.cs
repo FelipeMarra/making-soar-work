@@ -9,6 +9,11 @@ public class SquareAgent : MonoBehaviour {
     private Kernel _kernel;
     private Agent _agent;
 
+    private IntPtr _pXId;
+    private IntPtr _pYId;
+
+    public float speed;
+
     private List<EventData> events = new List<EventData>();
 
     void Start() {
@@ -18,31 +23,33 @@ public class SquareAgent : MonoBehaviour {
 
         _agent = new Agent("square", _kernel);
 
-        RegisterForEvents();
-
         CreateBaseInputWMEs();
 
+        RegisterForEvents();
+
         _agent.LoadProductions(Application.dataPath + "/AI/SoarProductions/square-agent.soar");
+    }
 
-        _agent.RunSelfForever();
+    void Update() {
+        _agent.RunSelfTilOutput();
+    }
 
+    void OnDestroy(){
         SoarUtils.UnregisterForEvents(events, _agent, _kernel);
+        //TODO _kernel.Shutdown();
+    }
 
-        Debug.Log("<color='red'>SOAR STOPED</color>");
+    void CreateBaseInputWMEs() {
+        Identifier inputId = _agent.GetInputLink();
+        Identifier squareId = _agent.CreateIdWME(inputId, "square");
+        Identifier positionId = _agent.CreateIdWME(squareId, "position");
+        _pXId = _agent.CreateFloatWME(positionId, "x", this.transform.position.x);
+        _pYId = _agent.CreateFloatWME(positionId, "y", this.transform.position.y);
+        _agent.Commit();
     }
 
 //##################### Events ######################
 #region Events
-    static void PrintEventCallback(smlPrintEventId eventID, IntPtr pUserData, IntPtr pAgent, string message) {
-        string userData = (string)((GCHandle)pUserData).Target;
-        Debug.Log(userData + message);
-    }
-
-    static void UpdateEventCallback(smlUpdateEventId eventID, IntPtr pUserData, IntPtr pKernel, smlRunFlags runFlags) {
-        string userData = (string)((GCHandle)pUserData).Target;
-        Debug.Log(userData + " run flags " + runFlags);
-    }
-
     void RegisterForEvents() {
         //Print
         GCHandle printUserData = GCHandle.Alloc("PRINT EVENT: ");
@@ -55,14 +62,45 @@ public class SquareAgent : MonoBehaviour {
         events.Add(new EventData(eventUserData, updateId, smlUnity.EventType.UPDATE));
     }
 
-#endregion
+    //Update
+    static void PrintEventCallback(smlPrintEventId eventID, IntPtr pUserData, IntPtr pAgent, string message) {
+        string userData = (string)((GCHandle)pUserData).Target;
+        Debug.Log(userData + message);
+    }
+    
+    //Update
+    void UpdateEventCallback(smlUpdateEventId eventID, IntPtr pUserData, IntPtr pKernel, smlRunFlags runFlags) {
+        string userData = (string)((GCHandle)pUserData).Target;
+        //Debug.Log(userData + " run flags " + runFlags); TODO runFlags crashing
+        ExecuteCommands();
+        UpdateInput();
+        Debug.Log(userData + transform.position);
+    }
 
-    void CreateBaseInputWMEs(){
-        Identifier inputId = _agent.GetInputLink();
-        Identifier squareId = _agent.CreateIdWME(inputId, "square");
-        Identifier positionId = _agent.CreateIdWME(squareId, "position");
-        IntPtr xId = _agent.CreateFloatWME(positionId, "x", transform.position.x);
-        IntPtr yId = _agent.CreateFloatWME(positionId, "y", transform.position.y);
+    void UpdateInput() {
+        _agent.Update(_pXId, this.transform.position.x);
+        _agent.Update(_pYId, this.transform.position.y);
         _agent.Commit();
     }
+
+    void ExecuteCommands() {
+        Debug.Log("N OF CMDs " + _agent.GetNumberCommands());
+        for (int i = 0; i < _agent.GetNumberCommands(); i++) {
+            Identifier cmd = _agent.GetCommand(i);
+            string cmdName = cmd.GetCommandName();
+            Debug.Log("CMD NAME " + cmdName);
+            if(cmdName == "move") {
+                //North
+                Vector3 direction = new Vector3(0f,1f,0f);
+
+                ///TODO cmd.GetParameterValue
+
+                this.transform.position += direction.normalized * speed * Time.deltaTime;
+
+                cmd.AddStatusComplete();
+            }
+        }
+    }
+
+#endregion
 }

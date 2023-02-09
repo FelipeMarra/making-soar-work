@@ -127,7 +127,7 @@ bool destroyWME(sml::Agent* pAgent, sml::WMElement* pWME) {
      return pAgent->DestroyWME(pWME);
 }
 
-char const* initSoar(sml::Agent* pAgent) {
+const char* initSoar(sml::Agent* pAgent) {
     return pAgent->InitSoar();
 }
 
@@ -172,7 +172,7 @@ void setAutoCommit(sml::Kernel* pKernel, bool state) {
 }
 
 //##################### Identifier ######################
-char const* getCommandName(sml::Identifier* identifier) {
+const char* getCommandName(sml::Identifier* identifier) {
     return identifier->GetCommandName();
 }
 
@@ -269,20 +269,20 @@ bool unregisterForUpdateEvent(sml::Kernel* pKernel, int callbackId) {
 
 //##################### Test ######################
 #pragma region Test
-//Identifier* inputId;
-//
-//void runEventHandler(smlRunEventId id, void* pUserData, Agent* pAgent, smlPhase phase) {
-//    char cmd[20];
-//    strcpy_s(cmd, "print --depth 3 ");
-//    strcat_s(cmd, inputId->GetIdentifierName());
-//
-//    //cout << cmd << endl;
-//    const char* answer = pAgent->ExecuteCommandLine(cmd);
-//    //cout << answer << endl;
-//}
-//
+Identifier* inputId;
+
+void runEventHandler(smlRunEventId id, void* pUserData, Agent* pAgent, smlPhase phase) {
+    char cmd[20];
+    strcpy_s(cmd, "print --depth 3 ");
+    strcat_s(cmd, inputId->GetIdentifierName());
+
+    //cout << cmd << endl;
+    const char* answer = pAgent->ExecuteCommandLine(cmd);
+    //cout << answer << endl;
+}
+
 //int main(int argc, char* argv[]) {
-//    sml::Kernel* pKernel = createKernel();
+//    sml::Kernel* pKernel = createKernelInNewThread();
 //    sml::Agent* pAgent = createAgent("teste", pKernel);
 //
 //    //NOT WORKING:
@@ -291,7 +291,7 @@ bool unregisterForUpdateEvent(sml::Kernel* pKernel, int callbackId) {
 //    //NOT WORKING:
 //    //registerForProductionAddedEvent(pAgent);
 //
-//    registerForPrintEvent(pAgent);
+//    //registerForPrintEvent(pAgent);
 //
 //    inputId = getInputLink(pAgent);
 //    Identifier* squareId = createIdWME(pAgent, inputId, "square");
@@ -300,8 +300,11 @@ bool unregisterForUpdateEvent(sml::Kernel* pKernel, int callbackId) {
 //    FloatElement* yId = createFloatWME(pAgent, positionId, "y", 1.5);
 //    commit(pAgent);
 //
-//    loadProductions(pAgent, "C:\\Users\\felip\\Documents\\GitHub\\making-soar-work\\UnitySoarSquareEx\\DLL\\SoarUnityAPI\\x64\\Release\\initialize-square-agent.soar");
-//    loadProductions(pAgent, "C:\\Users\\felip\\Documents\\GitHub\\making-soar-work\\UnitySoarSquareEx\\DLL\\SoarUnityAPI\\x64\\Release\\move-north.soar");
+//    cout<< "SQUARE IDENTIFIER GET NAME ";
+//    cout<<getCommandName(squareId)<<endl;
+//
+//    loadProductions(pAgent, "C:\\Users\\felip\\Documents\\GitHub\\making-soar-work\\UnitySoarSquareEx\\DLL\\SoarUnityAPI\\x64\\Release\\initialize-square-agent.soar", true);
+//    loadProductions(pAgent, "C:\\Users\\felip\\Documents\\GitHub\\making-soar-work\\UnitySoarSquareEx\\DLL\\SoarUnityAPI\\x64\\Release\\move-north.soar", true);
 //    
 //    //std::string trace = "RUN EVENT: ";
 //    //pAgent->RegisterForRunEvent(smlEVENT_BEFORE_DECISION_CYCLE, runEventHandler, &trace);

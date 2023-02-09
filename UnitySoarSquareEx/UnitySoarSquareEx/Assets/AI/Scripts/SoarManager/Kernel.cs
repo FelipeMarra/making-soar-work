@@ -18,7 +18,7 @@ namespace smlUnity{
 
     public class Kernel {
 
-        IntPtr _pKernel;
+        private static IntPtr _pKernel;
 
         public Kernel(){
             _pKernel = createKernelInNewThread();
