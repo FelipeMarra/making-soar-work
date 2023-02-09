@@ -58,9 +58,9 @@ public class SquareAgent : MonoBehaviour {
 #endregion
 
     void CreateBaseInputWMEs(){
-        IntPtr inputId = _agent.GetInputLink();
-        IntPtr squareId = _agent.CreateIdWME(inputId, "square");
-        IntPtr positionId = _agent.CreateIdWME(squareId, "position");
+        Identifier inputId = _agent.GetInputLink();
+        Identifier squareId = _agent.CreateIdWME(inputId, "square");
+        Identifier positionId = _agent.CreateIdWME(squareId, "position");
         IntPtr xId = _agent.CreateFloatWME(positionId, "x", transform.position.x);
         IntPtr yId = _agent.CreateFloatWME(positionId, "y", transform.position.y);
         _agent.Commit();

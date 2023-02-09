@@ -78,6 +78,33 @@ namespace smlUnity {
         [DllImport("SoarUnityAPI")]
         private static extern string initSoar(IntPtr pAgent);
 
+        [DllImport("SoarUnityAPI")]
+        private static extern void setOutputLinkChangeTracking(IntPtr pAgent, bool setting);
+
+        [DllImport("SoarUnityAPI")]
+        private static extern int getNumberOutputLinkChanges(IntPtr pAgent );
+
+        [DllImport("SoarUnityAPI")]
+        private static extern IntPtr getOutputLinkChange(IntPtr pAgent, int index);
+
+        [DllImport("SoarUnityAPI")]
+        private static extern bool isOutputLinkChangeAdd(IntPtr pAgent, int index);
+
+        [DllImport("SoarUnityAPI")]
+        private static extern int getNumberCommands(IntPtr pAgent);
+
+        [DllImport("SoarUnityAPI")]
+        private static extern bool commands(IntPtr pAgent);
+
+        [DllImport("SoarUnityAPI")]
+        private static extern IntPtr getCommand(IntPtr pAgent, int index);
+        
+        [DllImport("SoarUnityAPI")]
+        private static extern void commit(IntPtr pAgent);
+
+        [DllImport("SoarUnityAPI")]
+        private static extern bool isCommitRequired(IntPtr pAgent);
+
         //##################### Events ######################
         //###Print 
         #region Print
@@ -90,12 +117,6 @@ namespace smlUnity {
 
         [DllImport("SoarUnityAPI")]
         private static extern bool unregisterForPrintEvent(IntPtr pAgent, int callbackId);
-
-        [DllImport("SoarUnityAPI")]
-        private static extern void commit(IntPtr pAgent);
-
-        [DllImport("SoarUnityAPI")]
-        private static extern bool isCommitRequired(IntPtr pAgent);
 
         #endregion
 
@@ -144,8 +165,8 @@ namespace smlUnity {
         /// Returns the id object for the input link.
         /// The agent retains ownership of this object.
         /// </summary>
-        public IntPtr GetInputLink() {
-            return getInputLink(_pAgent);
+        public Identifier GetInputLink() {
+            return new Identifier(getInputLink(_pAgent));
         }
 
         ///<summary>
@@ -154,8 +175,8 @@ namespace smlUnity {
         /// Note this will be null until the first time an agent
         /// puts something on the output link.
         ///</summary>
-        public IntPtr GetOutputLink() {
-            return getOutputLink(_pAgent);
+        public Identifier GetOutputLink() {
+            return new Identifier(getOutputLink(_pAgent));
         }
 
         //##################### Manage WMEs ######################
@@ -182,8 +203,8 @@ namespace smlUnity {
         /// removed during the last decision cycle. Dereferencing
         /// a removed WME causes a segmentation fault.
         ///</summary>
-        public IntPtr CreateStringWME(IntPtr pParent, string atribute, string value) {
-            return createStringWME(_pAgent, pParent, atribute, value);
+        public IntPtr CreateStringWME(Identifier pParent, string atribute, string value) {
+            return createStringWME(_pAgent, pParent.GetPtr(), atribute, value);
         }
 
         ///<summary>
@@ -198,8 +219,8 @@ namespace smlUnity {
         /// removed during the last decision cycle. Dereferencing
         /// a removed WME causes a segmentation fault.
         ///</summary>
-        public IntPtr CreateIntWME(IntPtr pParent, string atribute, long value) {
-            return createIntWME(_pAgent , pParent, atribute, value);
+        public IntPtr CreateIntWME(Identifier pParent, string atribute, long value) {
+            return createIntWME(_pAgent , pParent.GetPtr(), atribute, value);
         }
         
 
@@ -216,8 +237,8 @@ namespace smlUnity {
         /// removed during the last decision cycle. Dereferencing
         /// a removed WME causes a segmentation fault.
         ///</summary>
-        public IntPtr CreateFloatWME(IntPtr pParent, string atribute, double value) {
-            return createFloatWME(_pAgent, pParent, atribute, value);
+        public IntPtr CreateFloatWME(Identifier pParent, string atribute, double value) {
+            return createFloatWME(_pAgent, pParent.GetPtr(), atribute, value);
         }
 
         ///<summary>
@@ -236,8 +257,8 @@ namespace smlUnity {
         /// removed during the last decision cycle. Dereferencing
         /// a removed WME causes a segmentation fault.
         ///</summary>
-        public IntPtr CreateIdWME(IntPtr pParent, string atribute) {
-            return createIdWME(_pAgent, pParent, atribute);
+        public Identifier CreateIdWME(Identifier pParent, string atribute) {
+            return new Identifier(createIdWME(_pAgent, pParent.GetPtr(), atribute));
         }
 
         ///<summary>
@@ -254,8 +275,8 @@ namespace smlUnity {
         /// removed during the last decision cycle. Dereferencing
         /// a removed WME causes a segmentation fault.
         ///</summary>
-        public IntPtr CreateSharedIdWME(IntPtr parent, string attribute, IntPtr pSharedValue){
-            return createSharedIdWME(_pAgent, parent, attribute, pSharedValue);
+        public Identifier CreateSharedIdWME(Identifier parent, string attribute, IntPtr pSharedValue) {
+            return new Identifier(createSharedIdWME(_pAgent, parent.GetPtr(), attribute, pSharedValue));
         }
 
         ///<summary>
@@ -296,11 +317,11 @@ namespace smlUnity {
         /// Blinking means the wme is removed and an identical wme is added,
         /// causing rules that test this wme to be rematched and to fire again.
         ///</summary>
-        public void SetBlinkIfNoChange(IntPtr pAgent, bool state){
+        public void SetBlinkIfNoChange(IntPtr pAgent, bool state) {
             setBlinkIfNoChange(_pAgent, state);
         }
 
-        public  bool isBlinkIfNoChange(){
+        public  bool isBlinkIfNoChange() {
             return isBlinkIfNoChange(_pAgent);
         }
 
@@ -323,7 +344,7 @@ namespace smlUnity {
         /// removed during the last decision cycle. Dereferencing
         /// a removed WME causes a segmentation fault.
         ///</summary>
-        public bool DestroyWME(IntPtr pWME){
+        public bool DestroyWME(IntPtr pWME) {
             return destroyWME(_pAgent, pWME);
         }
 
@@ -333,8 +354,95 @@ namespace smlUnity {
         /// here to be erased and the current input link to be sent over
         /// to the Soar agent for the start of its next run.
         ///</summary>
-        public string InitSoar(){
+        public string InitSoar() {
             return initSoar(_pAgent);
+        }
+
+        ///<summary>
+        /// Enable or disable output-link change tracking. Do
+        /// NOT use if using Commands, GetCommand,
+        /// GetOutputLinkChange, AddOutputHandler.
+        ///</summary>
+        public void SetOutputLinkChangeTracking(bool setting) {
+            setOutputLinkChangeTracking(_pAgent, setting);
+        }
+
+        ///<summary> Get number of changes to output link since last cycle.</summary>
+        public int GetNumberOutputLinkChanges() {
+            return getNumberOutputLinkChanges(_pAgent);
+        }
+
+        ///<summary> Get the n-th wme added or deleted to output link since last cycle.</summary>
+        public IntPtr GetOutputLinkChange(int index) {
+            return getOutputLinkChange(_pAgent, index);
+        }
+
+        ///<summary>
+        /// Returns true if the n-th wme change to the output-link
+        /// since the last cycle was a wme being added.
+        /// (false => it was a wme being deleted)
+        ///</summary>
+        public bool IsOutputLinkChangeAdd(int index) {
+            return isOutputLinkChangeAdd(_pAgent, index);
+        }
+
+        ///<summary>
+        /// Get the number of "commands".  A command in this context
+        /// is an identifier wme that have been added to the top level of
+        /// the output-link since the last decision cycle.
+        ///
+        /// NOTE: This function may involve searching a list so it's
+        /// best to not call it repeatedly.
+        ///</summary>
+        public int GetNumberCommands() {
+            return getNumberCommands(_pAgent);
+        }
+
+        ///<summary>
+        /// Returns true if there are "commands" available.
+        /// A command in this context is an identifier wme that
+        /// has been added to the top level of the output-link
+        /// since the last decision cycle.
+        ///
+        /// NOTE: This function may involve searching a list so it's
+        /// best to not call it repeatedly.
+        ///</summary>
+        public bool Commands() {
+            return commands(_pAgent);
+        }
+
+        ////<summary>
+        /// Get the n-th "command".  A command in this context
+        /// is an identifier wme that have been added to the top level of
+        /// the output-link since the last decision cycle.
+        ///
+        /// Special note about output-link WMEs: The agent is
+        /// free to remove WMEs from the output-link at any time.
+        /// If you retain a WME for multiple decision cycles,
+        /// you must check output link changes (using
+        /// GetNumOutputLinkChanges, GetOutputLinkChange, and
+        /// IsOutputLinkAdd) to check if the WMEs you have were
+        /// removed during the last decision cycle. Dereferencing
+        /// a removed WME causes a segmentation fault.
+        ///</summary>
+        ///
+        /// <param name="index"> The 0-based index for which command to get.</param>
+        /// <returns>Returns NULL if index is out of range.</returns>
+        public Identifier GetCommand(int index) {
+            return new Identifier(getCommand(_pAgent, index));
+        }
+
+        ///<summary>
+        /// Send the most recent list of changes to working memory
+        /// over to the kernel.
+        ///</summary>
+        public void Commit() {
+            commit(_pAgent);
+        }
+
+        ///<summary> Returns true if this agent has uncommitted changes. </summary>
+        public bool IsCommitRequired() {
+            return isCommitRequired(_pAgent);
         }
 
         //##################### Events ######################
@@ -373,28 +481,11 @@ namespace smlUnity {
         }
 
         ///<summary> Unregister for a particular event </summary>
-        public  bool UnregisterForPrintEvent(int callbackId){
+        public  bool UnregisterForPrintEvent(int callbackId) {
             return unregisterForPrintEvent(_pAgent, callbackId);
         }
 
         //TODO: XML Event
-
-        //TODO: Get Output Link Changes
-        
-        //TODO: Get Commands
-
-        ///<summary>
-        /// Send the most recent list of changes to working memory
-        /// over to the kernel.
-        ///</summary>
-        public void Commit() {
-            commit(_pAgent);
-        }
-
-        ///<summary> Returns true if this agent has uncommitted changes. </summary>
-        public bool IsCommitRequired(){
-            return isCommitRequired(_pAgent);
-        }
 
         //##################### Run ######################
         ///<summary> Run one Soar agent for the specified number of decisions </summary>

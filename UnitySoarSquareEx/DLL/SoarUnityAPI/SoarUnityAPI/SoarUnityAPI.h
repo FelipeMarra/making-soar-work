@@ -44,6 +44,33 @@ extern "C" {
 
 	SOARUNITYAPI_API char const* initSoar(sml::Agent*);
 
+	SOARUNITYAPI_API void setOutputLinkChangeTracking(sml::Agent*, bool);
+
+	SOARUNITYAPI_API int getNumberOutputLinkChanges(sml::Agent* );
+
+	SOARUNITYAPI_API sml::WMElement* getOutputLinkChange(sml::Agent*, int);
+
+	SOARUNITYAPI_API bool isOutputLinkChangeAdd(sml::Agent*, int);
+
+	SOARUNITYAPI_API int getNumberCommands(sml::Agent*);
+
+	SOARUNITYAPI_API bool commands(sml::Agent*);
+
+	SOARUNITYAPI_API sml::Identifier* getCommand(sml::Agent*, int );
+
+	SOARUNITYAPI_API void commit(sml::Agent*);
+
+	SOARUNITYAPI_API bool isCommitRequired(sml::Agent*);
+
+	SOARUNITYAPI_API void setAutoCommit(sml::Kernel*, bool);
+
+	//##################### Identifier ######################
+	SOARUNITYAPI_API char const* getCommandName(sml::Identifier*);
+
+	SOARUNITYAPI_API void addStatusComplete(sml::Identifier*);
+
+	SOARUNITYAPI_API void addStatusError(sml::Identifier*);
+
 	//##################### Events ######################
 	//###### Print
 	SOARUNITYAPI_API int registerForPrintEvent(sml::Agent*, sml::smlPrintEventId, sml::PrintEventHandler, void*, bool, bool);
@@ -54,12 +81,6 @@ extern "C" {
 	SOARUNITYAPI_API int registerForUpdateEvent(sml::Kernel*, sml::smlUpdateEventId, sml::UpdateEventHandler, void*, bool);
 
 	SOARUNITYAPI_API bool unregisterForUpdateEvent(sml::Kernel*, int);
-
-	SOARUNITYAPI_API void commit(sml::Agent*);
-
-	SOARUNITYAPI_API bool isCommitRequired(sml::Agent*);
-
-	SOARUNITYAPI_API void setAutoCommit(sml::Kernel*, bool);
 
 	//##################### Run Agent ######################
 	SOARUNITYAPI_API char const* runSelf(sml::Agent*, int, sml::smlRunStepSize);

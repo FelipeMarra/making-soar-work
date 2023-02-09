@@ -131,6 +131,34 @@ char const* initSoar(sml::Agent* pAgent) {
     return pAgent->InitSoar();
 }
 
+void setOutputLinkChangeTracking(sml::Agent* pAgent, bool setting) {
+    return pAgent->SetOutputLinkChangeTracking(setting);
+}
+
+int getNumberOutputLinkChanges(sml::Agent* pAgent) {
+    return pAgent->GetNumberOutputLinkChanges();
+}
+
+sml::WMElement* getOutputLinkChange(sml::Agent* pAgent, int index) {
+    return pAgent->GetOutputLinkChange(index);
+}
+
+bool isOutputLinkChangeAdd(sml::Agent* pAgent, int index) {
+    return pAgent->IsOutputLinkChangeAdd(index);
+}
+
+int getNumberCommands(sml::Agent* pAgent) {
+    return pAgent->GetNumberCommands();
+}
+
+bool commands(sml::Agent* pAgent) {
+    return pAgent->Commands();
+}
+
+sml::Identifier* getCommand(sml::Agent* pAgent, int index) {
+    return pAgent->GetCommand(index);
+}
+
 void commit(sml::Agent* pAgent) {
     pAgent->Commit();
 }
@@ -141,6 +169,19 @@ bool isCommitRequired(sml::Agent* pAgent) {
 
 void setAutoCommit(sml::Kernel* pKernel, bool state) {
     pKernel->SetAutoCommit(state);
+}
+
+//##################### Identifier ######################
+char const* getCommandName(sml::Identifier* identifier) {
+    return identifier->GetCommandName();
+}
+
+void addStatusComplete(sml::Identifier* identifier) {
+    identifier->AddStatusComplete();
+}
+
+void addStatusError(sml::Identifier* identifier) {
+    return identifier->AddStatusError();
 }
 
 #pragma endregion
