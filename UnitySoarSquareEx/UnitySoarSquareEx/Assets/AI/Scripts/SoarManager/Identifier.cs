@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace smlUnity {
     public class Identifier {
-        private static IntPtr _pIdentifier;
+        private IntPtr _pIdentifier;
 
         public Identifier(IntPtr pIdentifier) {
             _pIdentifier = pIdentifier;
@@ -12,6 +12,9 @@ namespace smlUnity {
 #region From DLL
         [DllImport("SoarUnityAPI")]
         private static extern IntPtr getCommandName(IntPtr pIdentifier);
+
+        [DllImport("SoarUnityAPI")]
+        private static extern IntPtr getParameterValue(IntPtr pIdentifier, string attribute);
 
         [DllImport("SoarUnityAPI")]
         private static extern void addStatusComplete(IntPtr pIdentifier);
@@ -31,6 +34,10 @@ namespace smlUnity {
         ///</summary>
         public string GetCommandName() {
             return Marshal.PtrToStringAnsi(getCommandName(_pIdentifier));
+        }
+
+        public string GetParameterValue(string attribute) {
+            return Marshal.PtrToStringAnsi(getParameterValue(_pIdentifier, attribute));
         }
 
          ///<summary>Adds "^status complete" as a child of this identifier.</summary>

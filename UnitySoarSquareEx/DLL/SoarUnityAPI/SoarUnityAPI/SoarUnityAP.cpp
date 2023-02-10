@@ -38,6 +38,10 @@ sml::Kernel* createKernelInNewThread() {
     return pKernel;
 }
 
+void shutdown(sml::Kernel* pKernel) {
+    pKernel->Shutdown();
+}
+
 sml::Agent* createAgent(const char* name, sml::Kernel* pKernel) {
     sml::Agent* pAgent = pKernel->CreateAgent(name);
 
@@ -174,6 +178,10 @@ void setAutoCommit(sml::Kernel* pKernel, bool state) {
 //##################### Identifier ######################
 const char* getCommandName(sml::Identifier* identifier) {
     return identifier->GetCommandName();
+}
+
+const char* getParameterValue(sml::Identifier* identifier, const char* attribute) {
+    return identifier->GetParameterValue(attribute);
 }
 
 void addStatusComplete(sml::Identifier* identifier) {

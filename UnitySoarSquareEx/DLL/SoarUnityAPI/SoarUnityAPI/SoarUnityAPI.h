@@ -9,6 +9,8 @@
 extern "C" {
 	//######## Manage Kernel & Agent & Productions #######################
 	SOARUNITYAPI_API sml::Kernel* createKernelInNewThread();
+	
+	SOARUNITYAPI_API  void shutdown(sml::Kernel*);
 
 	SOARUNITYAPI_API sml::Agent* createAgent(const char*, sml::Kernel*);
 
@@ -66,6 +68,8 @@ extern "C" {
 
 	//##################### Identifier ######################
 	SOARUNITYAPI_API const char* getCommandName(sml::Identifier*);
+
+	SOARUNITYAPI_API const char* getParameterValue(sml::Identifier* identifier, const char* attribute);
 
 	SOARUNITYAPI_API void addStatusComplete(sml::Identifier*);
 

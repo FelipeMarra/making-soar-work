@@ -17,7 +17,7 @@ namespace smlUnity {
     }
 
     public class Agent{
-        private static IntPtr _pAgent;
+        private IntPtr _pAgent;
         private string _name;
         private Kernel _kernel;
 

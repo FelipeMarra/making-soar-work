@@ -14,7 +14,7 @@ public class SquareAgent : MonoBehaviour {
 
     public float speed;
 
-    private List<EventData> events = new List<EventData>();
+    List<EventData> events = new List<EventData>();
 
     void Start() {
         _kernel = new Kernel();
@@ -36,7 +36,7 @@ public class SquareAgent : MonoBehaviour {
 
     void OnDestroy(){
         SoarUtils.UnregisterForEvents(events, _agent, _kernel);
-        //TODO _kernel.Shutdown();
+        _kernel.Shutdown();
     }
 
     void CreateBaseInputWMEs() {
@@ -67,14 +67,14 @@ public class SquareAgent : MonoBehaviour {
         string userData = (string)((GCHandle)pUserData).Target;
         Debug.Log(userData + message);
     }
-    
+
     //Update
     void UpdateEventCallback(smlUpdateEventId eventID, IntPtr pUserData, IntPtr pKernel, smlRunFlags runFlags) {
         string userData = (string)((GCHandle)pUserData).Target;
-        //Debug.Log(userData + " run flags " + runFlags); TODO runFlags crashing
+        Debug.Log(userData + "run flags: " + runFlags + "eventID: " + eventID);
         ExecuteCommands();
         UpdateInput();
-        Debug.Log(userData + transform.position);
+        Debug.Log(userData + this.transform.position);
     }
 
     void UpdateInput() {
@@ -89,13 +89,16 @@ public class SquareAgent : MonoBehaviour {
             Identifier cmd = _agent.GetCommand(i);
             string cmdName = cmd.GetCommandName();
             Debug.Log("CMD NAME " + cmdName);
+
             if(cmdName == "move") {
-                //North
-                Vector3 direction = new Vector3(0f,1f,0f);
+                string directionName = cmd.GetParameterValue("direction");
+                Vector3 directionVec = new Vector3();
 
-                ///TODO cmd.GetParameterValue
+                if(directionName == "north") {
+                    directionVec = new Vector3(0f,1f,0f);
+                }
 
-                this.transform.position += direction.normalized * speed * Time.deltaTime;
+                this.transform.position += directionVec.normalized * speed * Time.deltaTime;
 
                 cmd.AddStatusComplete();
             }
