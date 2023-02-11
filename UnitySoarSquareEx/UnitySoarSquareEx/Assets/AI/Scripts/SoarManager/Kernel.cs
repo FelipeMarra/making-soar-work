@@ -95,6 +95,16 @@ namespace smlUnity{
         /// Multiple handlers can be registered for the same event.
         /// This event is registered with the kernel because they relate to events we think may be useful to use to trigger updates
         /// in synchronous environments.
+        ///
+        /// Ps: To send a object as a IntPtr in the userData parameters use:
+        /// GCHandle data = GCHandle.Alloc(YOUR_OBJECT);
+        /// IntPtr dataPtr = GCHandle.ToIntPtr(userData);
+        /// A pointer allocated in that way can than be type casted like:
+        /// YOUR_OBJECT data = (YOUR_OBJECT_TYPE)((GCHandle)userDataPtr).Target;
+        /// And don't forget to free it afeter use: data.Free()
+        ///
+        /// Create a UpdateEventHandler delegate and use is as the handler parameter. Delegates are managed differently,
+        /// see https://www.mono-project.com/docs/advanced/pinvoke/#memory-boundaries 
         ///</summary>
         ///
         ///<param name="smlEventId">The event we're interested in (see the list below for valid values)</param>

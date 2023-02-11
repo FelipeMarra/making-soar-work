@@ -110,7 +110,7 @@ namespace smlUnity {
         #region Print
         //TODO: Show text on the screen instead of printing into the console for better visualization
 
-        public delegate void PrintEventHandler(smlPrintEventId eventID, IntPtr pUserData, IntPtr pAgent, string message);
+        public delegate void PrintEventHandler(smlPrintEventId eventID, IntPtr pUserData, IntPtr pAgent, IntPtr pMessage);
 
         [DllImport("SoarUnityAPI")]
         private static extern int registerForPrintEvent(IntPtr pAgent, smlPrintEventId eventID, PrintEventHandler handler, IntPtr pUserData, bool ignoreOwnEchos, bool addToBack);
@@ -457,7 +457,9 @@ namespace smlUnity {
         ///<summary> 
         /// Register for an "PrintEvent".
         /// Multiple handlers can be registered for the same event.
-
+        ///
+        /// Current set is: smlEVENT_PRINT
+        ///
         /// Ps: To send a object as a IntPtr in the userData parameters use:
         /// GCHandle data = GCHandle.Alloc(YOUR_OBJECT);
         /// IntPtr dataPtr = GCHandle.ToIntPtr(userData);
@@ -465,8 +467,8 @@ namespace smlUnity {
         /// YOUR_OBJECT data = (YOUR_OBJECT_TYPE)((GCHandle)userDataPtr).Target;
         /// And don't forget to free it afeter use: data.Free()
         /// 
-        /// Current set is: smlEVENT_PRINT
-        /// 
+        /// Create a PrintEventHandler delegate and use is as the handler parameter. Delegates are managed differently,
+        /// see https://www.mono-project.com/docs/advanced/pinvoke/#memory-boundaries 
         ///</summary>
         ///
         ///<param name="smlEventId">     The event we're interested in (see the list below for valid values)</param>
