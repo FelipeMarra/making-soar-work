@@ -7,7 +7,7 @@ Basically, creating a DLL to interact directly with Soar using C++ works - notic
 ## Current Status
 The current example provides some functions from the Kernel, Agent, and Identifier classes. The SoarUnity.dll exports the functions from the Soar.dll - also, it can print from its C++ code into Unity's console -, and inside the Unity project the classes are created based on those to allow the use of Soar. They're not complete yet - the Agent one is in a more advanced stage. All of the imported functions are documented with the original docs plus some tips to deal with pointers in C#. </br>
 
-At this point the project is an implementation of the `move-north` operator from the `eaters` tutorial - it makes a square move north. The code can already be used as a simple template for creating you're won agents in Unity, but a better example will be provided soon, accompanied by a series of tutorials with everything needed to run Soar inside your games.
+At this point the project is an implementation of the `move-north` operator from the `eaters` tutorial - it makes a square move north. The code can already be used as a simple template for creating you're own agents in Unity, but a better example will be provided soon, accompanied by a series of tutorials with everything needed to run Soar inside your games.
 
 # BELLOW THIS POINT THIS DOC ONLY A PLANNING.
 # /UnitySoarSquareEx
