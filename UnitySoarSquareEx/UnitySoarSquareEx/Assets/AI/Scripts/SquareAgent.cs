@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using smlUnity;
 
-
 public class PositionData{
     public static IntPtr pXId;
     public static IntPtr pYId;
