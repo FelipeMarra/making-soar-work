@@ -102,9 +102,6 @@ namespace smlUnity{
         /// A pointer allocated in that way can than be type casted like:
         /// YOUR_OBJECT data = (YOUR_OBJECT_TYPE)((GCHandle)userDataPtr).Target;
         /// And don't forget to free it afeter use: data.Free()
-        ///
-        /// Create a UpdateEventHandler delegate and use is as the handler parameter. Delegates are managed differently,
-        /// see https://www.mono-project.com/docs/advanced/pinvoke/#memory-boundaries 
         ///</summary>
         ///
         ///<param name="smlEventId">The event we're interested in (see the list below for valid values)</param>

@@ -63,14 +63,12 @@ public class SquareAgent : MonoBehaviour {
     void RegisterForEvents() {
         //Print
         GCHandle printUserData = GCHandle.Alloc("PRINT EVENT: ");
-        Agent.PrintEventHandler printEventDelegate = new Agent.PrintEventHandler(PrintEventCallback);
-        int printId = _agent.RegisterForPrintEvent(smlPrintEventId.smlEVENT_PRINT, printEventDelegate, GCHandle.ToIntPtr(printUserData));
+        int printId = _agent.RegisterForPrintEvent(smlPrintEventId.smlEVENT_PRINT, PrintEventCallback, GCHandle.ToIntPtr(printUserData));
         events.Add(new EventData(printUserData, printId, smlUnity.EventType.PRINT));
 
         //Update
         GCHandle eventUserData = GCHandle.Alloc("UPDATE EVENT: ");
-        Kernel.UpdateEventHandler updateEventDelegate = new Kernel.UpdateEventHandler(UpdateEventCallback);
-        int updateId = _kernel.RegisterForUpdateEvent(smlUpdateEventId.smlEVENT_AFTER_ALL_OUTPUT_PHASES, updateEventDelegate, GCHandle.ToIntPtr(eventUserData));
+        int updateId = _kernel.RegisterForUpdateEvent(smlUpdateEventId.smlEVENT_AFTER_ALL_OUTPUT_PHASES, UpdateEventCallback, GCHandle.ToIntPtr(eventUserData));
         events.Add(new EventData(eventUserData, updateId, smlUnity.EventType.UPDATE));
     }
 
@@ -84,7 +82,6 @@ public class SquareAgent : MonoBehaviour {
     //Update
     static void UpdateEventCallback(smlUpdateEventId eventID, IntPtr pUserData, IntPtr pKernel, smlRunFlags runFlags) {
         string userData = (string)((GCHandle)pUserData).Target;
-        Debug.Log(userData);
         ExecuteCommands();
         UpdateInput();
         Debug.Log(userData + " (" + PositionData.x + "," + PositionData.y + ") ");
