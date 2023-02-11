@@ -1,5 +1,5 @@
 # Making Soar Work w/ Unity
- > making the SOAR 9.6.1 cognitive architecture work with Unity 2021.3.14.f1
+ > making the SOAR 9.6.1 cognitive architecture work with Unity 2021.3.14.f1 (on windows)
 
 ## Summary
 Basically, creating a DLL to interact directly with Soar using C++ works - notice that inside Unity both Soar and your DLLs must be in the same folder. Using the C# sml directly will crash Unity if you register for a Soar event.
