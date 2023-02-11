@@ -2,9 +2,7 @@
  > making the SOAR 9.6.1 cognitive architecture work with Unity 2021.3.14.f1
 
 ## Summary
-Basically, creating a DLL to interact directly with Soar using C++ works. Notice that inside Unity both Soar and your DLLs must be in the same folder. <br> 
-
-Using the C# sml directly will crash Unity if you register for a Soar event (at least in the way I did it, maybe I've done it wrong).
+Basically, creating a DLL to interact directly with Soar using C++ works - notice that inside Unity both Soar and your DLLs must be in the same folder. Using the C# sml directly will crash Unity if you register for a Soar event.
 
 ## Current Status
 The current example provides some functions from the Kernel, Agent, and Identifier classes. The SoarUnity.dll exports the functions from the Soar.dll - also, it can print from its C++ code into Unity's console -, and inside the Unity project the classes are created based on those to allow the use of Soar. They're not complete yet - the Agent one is in a more advanced stage. All of the imported functions are documented with the original docs plus some tips to deal with pointers in C#. </br>
