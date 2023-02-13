@@ -1,0 +1,13 @@
+VERSION 4
+\square-agent\square-agent.dm
+0	ROOT square-agent square-agent 1
+1	0	FOPERATOR _firstload _firstload.soar 2
+2	0	FOLDER all all 3
+3	2	FOPERATOR output output.soar 4
+4	0	FOLDER elaborations elaborations 5
+5	4	FOPERATOR _all _all.soar 6
+6	4	FOPERATOR top-state top-state.soar 7
+7	0	OPERATOR initialize-square-agent initialize-square-agent.soar 8
+8	0	OPERATOR move move.soar 9
+9	0	OPERATOR rotate rotate.soar 10
+END

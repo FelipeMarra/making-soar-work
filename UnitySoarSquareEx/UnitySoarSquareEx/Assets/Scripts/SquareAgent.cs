@@ -6,14 +6,18 @@ using smlUnity;
 
 public class PositionData{
     public static IntPtr blockedNorthId;
+    public static string blockedNorthValue;
     public static IntPtr blockedEastId;
+    public static string blockedEastValue;
     public static IntPtr blockedSouthId;
+    public static string blockedSouthValue;
     public static IntPtr blockedWestId;
+    public static string blockedWestValue;
     public static Vector3 incrementPosition;
     public static float speed = 2;
 }
 
-public class SquareAgent : MonoBehaviour {
+public class SquareAgent : SingletonMonobehavior<SquareAgent> {
 
     private Kernel _kernel;
     private static Agent _agent;
@@ -34,7 +38,7 @@ public class SquareAgent : MonoBehaviour {
 
         RegisterForEvents();
 
-        _agent.LoadProductions(Application.dataPath + "/AI/SoarProductions/square-agent.soar");
+        _agent.LoadProductions(Application.dataPath + "/Soar/Productions/square-agent.soar");
     }
 
     void Update() {
