@@ -1,0 +1,54 @@
+#################### Move Operator ##########################
+
+##### Proposal
+## Propose move operator for each direction that is not blocked
+sp {move*porpose*direction
+    (state <s> ^name square-agent
+               ^directions.value <direction>
+               ^io.input-link.square.blocked.<direction> no)
+-->
+    (<s> ^operator <o> + =)
+    (<o> ^name move
+         ^actions.move.direction <direction>)
+    (write |Proposed Move: |<direction>|  |)
+}
+
+#### Elaborate
+## Last Move
+# Apply*move*last-move
+# If the move operator is selected, store the current
+# move as the value of the last move attr
+sp {move*last-move
+    (state <s> ^operator <o>)
+
+    (<o> ^name move
+         ^actions.move.direction <direction> )
+-->
+    (<s> ^last-direction <direction>)
+}
+
+# Apply*move*remove*last-move
+# If the move operator is selected, and there is a last
+# direction different from the current direction,
+# remove that last direction from the WM
+sp {move*remove*last-move
+    (state <s>  ^last-direction <last-dir>
+                ^operator <o>)
+
+    (<o> ^name move
+         ^actions.move.direction {<direction> <> <last-dir>} )
+-->
+    (<s> ^last-direction <last-dir> -)
+}
+
+#### Selection
+sp {move*prefer*last-move
+    (state <s>  ^operator <o> +
+                ^last-direction <last-dir>)
+
+    (<o> ^name move
+         ^actions.move.direction <last-dir>)
+-->
+    (<s> ^operator <o> >)
+    (write |PREFERE Move: |<last-dir>|  |)
+}

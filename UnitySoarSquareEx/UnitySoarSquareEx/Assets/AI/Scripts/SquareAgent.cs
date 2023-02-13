@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using smlUnity;
 
 public class PositionData{
-    public static IntPtr pXId;
-    public static IntPtr pYId;
-    public static float x;
-    public static float y;
+    public static IntPtr blockedNorthId;
+    public static IntPtr blockedEastId;
+    public static IntPtr blockedSouthId;
+    public static IntPtr blockedWestId;
     public static Vector3 incrementPosition;
     public static float speed = 2;
 }
@@ -38,13 +38,11 @@ public class SquareAgent : MonoBehaviour {
     }
 
     void Update() {
-        PositionData.x = this.transform.position.x;
-        PositionData.y = this.transform.position.y;
         _agent.RunSelfTilOutput();
         this.transform.position += PositionData.incrementPosition;
     }
 
-    void OnDestroy(){
+    void OnDisable(){
         SoarUtils.UnregisterForEvents(events, _agent, _kernel);
         _kernel.Shutdown();
     }
@@ -52,9 +50,11 @@ public class SquareAgent : MonoBehaviour {
     void CreateBaseInputWMEs() {
         Identifier inputId = _agent.GetInputLink();
         Identifier squareId = _agent.CreateIdWME(inputId, "square");
-        Identifier positionId = _agent.CreateIdWME(squareId, "position");
-        PositionData.pXId = _agent.CreateFloatWME(positionId, "x", this.transform.position.x);
-        PositionData.pYId = _agent.CreateFloatWME(positionId, "y", this.transform.position.y);
+        Identifier blockedId = _agent.CreateIdWME(squareId, "blocked");
+        PositionData.blockedNorthId = _agent.CreateStringWME(blockedId, "north", "no");
+        PositionData.blockedEastId = _agent.CreateStringWME(blockedId, "east", "no");
+        PositionData.blockedSouthId = _agent.CreateStringWME(blockedId, "south", "no");
+        PositionData.blockedWestId = _agent.CreateStringWME(blockedId, "west", "no");
         _agent.Commit();
     }
 
@@ -84,12 +84,13 @@ public class SquareAgent : MonoBehaviour {
         string userData = (string)((GCHandle)pUserData).Target;
         ExecuteCommands();
         UpdateInput();
-        Debug.Log(userData + " (" + PositionData.x + "," + PositionData.y + ") ");
     }
 
     static void UpdateInput() {
-        _agent.Update(PositionData.pXId, PositionData.x);
-        _agent.Update(PositionData.pYId, PositionData.y);
+        _agent.Update(PositionData.blockedNorthId, "no");
+        _agent.Update(PositionData.blockedEastId, "no");
+        _agent.Update(PositionData.blockedSouthId, "no");
+        _agent.Update(PositionData.blockedWestId, "no");
         _agent.Commit();
     }
 
@@ -104,8 +105,19 @@ public class SquareAgent : MonoBehaviour {
                 string directionName = cmd.GetParameterValue("direction");
                 Vector3 directionVec = new Vector3();
 
-                if(directionName == "north") {
-                    directionVec = new Vector3(0f,1f,0f);
+                switch (directionName) {
+                    case "north":
+                        directionVec = new Vector3(0f,1f,0f);
+                        break;
+                    case "east":
+                        directionVec = new Vector3(1f,0f,0f);
+                        break;
+                    case "south":
+                        directionVec = new Vector3(0f,-1f,0f);
+                        break;
+                    case "west":
+                        directionVec = new Vector3(-1f,0f,0f);
+                        break;
                 }
 
                 PositionData.incrementPosition = directionVec.normalized * PositionData.speed * Time.deltaTime;

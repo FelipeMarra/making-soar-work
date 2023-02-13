@@ -6,4 +6,5 @@ pushd elaborations
 source elaborations_source.soar
 popd
 source initialize-square-agent.soar
-source move-north.soar
+source move.soar
+source rotate.soar

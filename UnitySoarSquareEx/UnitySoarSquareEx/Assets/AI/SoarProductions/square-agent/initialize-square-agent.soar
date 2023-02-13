@@ -1,13 +1,3 @@
-# Generate a wait state rather than a state-no-change impasse.
-# Alternatively, this can be performed using rules and that might
-# be a better option depending on your situation.
-# See http://code.google.com/p/soar/wiki/CommandLineInterface#waitsnc
-#waitsnc --enable
-
-# We're going to print interesting stuff as it happens, so lets
-# turn the watch off so this is easy to see in the debugger.
-#watch 0
-
 sp {propose*initialize-square-agent
    (state <s> ^superstate nil
              -^name)
@@ -17,9 +7,19 @@ sp {propose*initialize-square-agent
 }
 
 sp {apply*initialize-square-agent
-   (state <s> ^operator <op>)
-   (<op> ^name initialize-square-agent)
+   (state <s> ^operator <o>)
+   (<o> ^name initialize-square-agent)
 -->
    (<s> ^name square-agent)
 }
 
+sp {initialize*directions
+    (state <state> ^type state)
+-->
+    #List possible directions
+   (<state> ^directions <n> <e> <s> <w>)
+   (<n> ^value north)
+   (<e> ^value east)
+   (<s> ^value south)
+   (<w> ^value west)
+}
