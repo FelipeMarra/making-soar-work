@@ -9,5 +9,4 @@ VERSION 4
 6	4	FOPERATOR top-state top-state.soar 7
 7	0	OPERATOR initialize-square-agent initialize-square-agent.soar 8
 8	0	OPERATOR move move.soar 9
-9	0	OPERATOR rotate rotate.soar 10
 END

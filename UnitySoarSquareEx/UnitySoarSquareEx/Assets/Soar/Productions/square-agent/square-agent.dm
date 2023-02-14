@@ -1,4 +1,4 @@
-36
+34
 SOAR_ID 0
 SOAR_ID 1
 SOAR_ID 2
@@ -19,23 +19,21 @@ SOAR_ID 16
 SOAR_ID 17
 ENUMERATION 18 1 move
 SOAR_ID 19
-ENUMERATION 20 1 rotate
-SOAR_ID 21
+SOAR_ID 20
+ENUMERATION 21 4 north south east west
 SOAR_ID 22
-ENUMERATION 23 4 north south east west
+ENUMERATION 23 4 north east south west
 SOAR_ID 24
-ENUMERATION 25 4 north east south west
-SOAR_ID 26
-SOAR_ID 27
-ENUMERATION 28 4 north east south west
-ENUMERATION 29 1 complete
-SOAR_ID 30
+SOAR_ID 25
+ENUMERATION 26 4 north east south west
+ENUMERATION 27 1 complete
+SOAR_ID 28
+ENUMERATION 29 2 yes no
+ENUMERATION 30 2 yes no
 ENUMERATION 31 2 yes no
 ENUMERATION 32 2 yes no
-ENUMERATION 33 2 yes no
-ENUMERATION 34 2 yes no
-ENUMERATION 35 4 north east south west
-36
+ENUMERATION 33 4 north east south west
+34
 0 type 5
 0 superstate 6
 0 top-state 0
@@ -46,13 +44,12 @@ ENUMERATION 35 4 north east south west
 0 epmem 10
 0 smem 14
 0 operator 17
-0 operator 19
-0 directions 22
-0 last-direction 35
+0 directions 20
+0 last-direction 33
 1 input-link 2
 1 output-link 3
-2 square 21
-3 move 27
+2 square 19
+3 move 25
 4 name 8
 10 command 11
 10 present-id 12
@@ -60,15 +57,14 @@ ENUMERATION 35 4 north east south west
 14 command 15
 14 result 16
 17 name 18
-17 actions 24
-19 name 20
-21 blocked 30
-22 value 23
-24 move 26
-26 direction 25
-27 status 29
-27 direction 28
-30 north 34
-30 east 33
-30 south 32
-30 west 31
+17 actions 22
+19 blocked 28
+20 value 21
+22 move 24
+24 direction 23
+25 status 27
+25 direction 26
+28 north 32
+28 east 31
+28 south 30
+28 west 29

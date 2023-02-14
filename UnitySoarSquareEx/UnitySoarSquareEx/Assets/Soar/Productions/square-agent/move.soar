@@ -50,5 +50,4 @@ sp {move*prefer*last-move
          ^actions.move.direction <last-dir>)
 -->
     (<s> ^operator <o> >)
-    (write |PREFERE Move: |<last-dir>|  |)
 }
