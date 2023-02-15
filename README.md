@@ -117,3 +117,10 @@ The agent is a simple square. The square can move in one of the for directions (
 
 ![square-agent-gif](https://user-images.githubusercontent.com/89817439/219059284-1c822e43-7750-4644-a626-887f189fc4c2.gif)
 
+## Initializing Agent
+
+## Running Decisions
+
+## Reacting to Events
+
+## Ending Agent
