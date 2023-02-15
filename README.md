@@ -1,5 +1,5 @@
 # Making Soar Work w/ Unity
- > making the SOAR 9.6.1 cognitive architecture work with Unity 2021.3.14.f1 (on windows)
+ > making the <a href="https://soar.eecs.umich.edu/"> Soar <a> 9.6.1 cognitive architecture work with <a href="https://unity.com/"> Unity <a> 2021.3.14.f1 (on windows)
 
 ## Summary
 Creating a C++ DLL to expose your own created functions that make use of Soar, or expose Soar's functions in a more direct way, will work if done correctly. Besides the Mono's docs <a href="https://www.mono-project.com/docs/advanced/pinvoke/"> recommendation for generating the code automatically with swig <a>, using the C# sml Dlls that come with Soar (which are generated with swig) will crash Unity if you register for a Soar event. <br>
