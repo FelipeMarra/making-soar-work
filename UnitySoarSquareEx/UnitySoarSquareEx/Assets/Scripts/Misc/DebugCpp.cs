@@ -1,3 +1,5 @@
+//This code was taken from https://stackoverflow.com/questions/43732825/use-debug-log-from-c
+
 using AOT;
 using System;
 using System.Runtime.InteropServices;

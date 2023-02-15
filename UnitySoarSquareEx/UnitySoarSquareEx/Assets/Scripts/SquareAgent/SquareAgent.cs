@@ -68,7 +68,9 @@ public class SquareAgent : SingletonMonobehavior<SquareAgent> {
         Debug.Log(userData + message);
     }
 
-    //Update
+    /// Update
+    /// Since every function inside the update callback needs to be static it makes sense to use Unity's events so non static functions
+    /// can be called. It also makes sense from a code organization perspective.
     static void UpdateEventCallback(smlUpdateEventId eventID, IntPtr pUserData, IntPtr pKernel, smlRunFlags runFlags) {
         List<Identifier> commands = new List<Identifier>();
 

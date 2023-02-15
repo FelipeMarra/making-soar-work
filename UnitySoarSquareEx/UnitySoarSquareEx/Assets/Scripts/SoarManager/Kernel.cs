@@ -101,7 +101,6 @@ namespace smlUnity{
         /// IntPtr dataPtr = GCHandle.ToIntPtr(userData);
         /// A pointer allocated in that way can than be type casted like:
         /// YOUR_OBJECT data = (YOUR_OBJECT_TYPE)((GCHandle)userDataPtr).Target;
-        /// And don't forget to free it afeter use: data.Free()
         ///</summary>
         ///
         ///<param name="smlEventId">The event we're interested in (see the list below for valid values)</param>
