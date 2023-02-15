@@ -462,9 +462,11 @@ namespace smlUnity {
         ///
         /// Ps: To send a object as a IntPtr in the userData parameters use:
         /// GCHandle data = GCHandle.Alloc(YOUR_OBJECT);
-        /// IntPtr dataPtr = GCHandle.ToIntPtr(userData);
+        /// IntPtr dataPtr = GCHandle.ToIntPtr(data);
         /// A pointer allocated in that way can than be type casted like:
-        /// YOUR_OBJECT data = (YOUR_OBJECT_TYPE)((GCHandle)userDataPtr).Target;
+        /// YOUR_OBJECT myObj = (YOUR_OBJECT_TYPE)((GCHandle)userDataPtr).Target;
+        /// And to free it after use:
+        /// data.Free();
         ///</summary>
         ///
         ///<param name="smlEventId">     The event we're interested in (see the list below for valid values)</param>
