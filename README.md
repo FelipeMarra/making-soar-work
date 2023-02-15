@@ -8,7 +8,7 @@ In the example provided in this repo the second aproach were chosen - expose Soa
 
 The current example provides some functions from the Kernel, Agent, and Identifier classes. The <a href="https://github.com/FelipeMarra/making-soar-work/tree/main/UnitySoarSquareEx/DLL/SoarUnityAPI/x64/Release"> SoarUnity.dll <a> exports the functions from the Soar.dll - also, it can print from its C++ code into Unity's console -, and inside the Unity project the classes are created based on those to allow the use of Soar. They're not complete yet - the Agent one is in a more advanced stage. All of the imported functions are documented with the original docs plus some tips to deal with pointers in C#. </br>
 
-## Exporting the Soar DLL
+# Exporting the Soar DLL
 > This example was created with Visual Studio and only thought to work on windows for now. The DLL project can be found <a href="https://github.com/FelipeMarra/making-soar-work/tree/main/UnitySoarSquareEx/DLL/SoarUnityAPI"> here <a>.
 
 #### 1. Create a new project in Visual Studio as a Dynamic-Link Library (DLL). </br>
@@ -64,7 +64,7 @@ To copy the built DLL inside the Unity project. To build the DLL just go `Build 
 >  Notice that inside Unity both Soar's and your's DLLs must be in the same folder
 </br>
 
-## Importing & Using the DLL Inside Unity
+# Importing & Using the DLL Inside Unity
 #### 1. Import the functions
 Inside a C# script on Unity use the attribute [DllImport("YOUR_DLL_NAME")] and the keywords `static extern` beforte every function signature one wants to import.
 ``` C#
@@ -110,8 +110,7 @@ public int LoadProductions(string path, bool echoResults = true) {
 }
 ```
 
-# Square Agent Example
-## The agent
+# Square Agent
 The agent is a simple square. The square can move in one of the for directions (north, east, south, west). When aproaching the defined berders the square will be blocked to continue in that direction. 
 
 ![square-agent-gif](https://user-images.githubusercontent.com/89817439/219059284-1c822e43-7750-4644-a626-887f189fc4c2.gif)
