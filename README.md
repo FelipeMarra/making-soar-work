@@ -7,6 +7,7 @@ Creating a C++ DLL to expose your own created functions that make use of Soar, o
 In the example provided in this repo the second aproach were chosen - expose Soar functions directly - to try to recreate the Soar classes inside Unity. That aproach will minimize the time one passes creating the DLL, and facilitate troubleshooting. </br>
 
 The current example provides some functions from the Kernel, Agent, and Identifier classes. The <a href="https://github.com/FelipeMarra/making-soar-work/tree/main/UnitySoarSquareEx/DLL/SoarUnityAPI/x64/Release"> SoarUnity.dll <a> exports the functions from the Soar.dll - also, it can print from its C++ code into Unity's console -, and inside the Unity project the classes are created based on those to allow the use of Soar. They're not complete yet - the Agent one is in a more advanced stage. All of the imported functions are documented with the original docs plus some tips to deal with pointers in C#. </br>
+</br>
 
 # Exporting the Soar DLL
 > This example was created with Visual Studio and only thought to work on windows for now. The DLL project can be found <a href="https://github.com/FelipeMarra/making-soar-work/tree/main/UnitySoarSquareEx/DLL/SoarUnityAPI"> here <a>.
@@ -73,10 +74,10 @@ private static extern IntPtr createAgent(string name, IntPtr pKernel);
  ```
 The IntPtr class allows you to receive pointers to C++ classes, strings, etc. <a href="https://www.mono-project.com/docs/advanced/pinvoke/"> Mono docs <a> will explain
 in detail how to import your functions, but here you go some tips about that and using Soar functions in general:
- 
+
 #### => Load productions
 For me only worked passing the full path. Use Application.dataPath + "PATH_FROM_ASSETS".
-  
+
 #### => Send pointer of C# object to C++
 ``` C#
 GCHandle data = GCHandle.Alloc(YOUR_OBJECT);
@@ -109,6 +110,7 @@ public int LoadProductions(string path, bool echoResults = true) {
     return loadProductions(_pAgent, path, echoResults);
 }
 ```
+</br>
 
 # Square Agent
 The agent is a simple square. The square can move in one of the for directions (north, east, south, west). When aproaching the defined berders the square will be blocked to continue in that direction. 
