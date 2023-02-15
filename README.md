@@ -81,15 +81,19 @@ For me only worked passing the full path. Use Application.dataPath + "PATH_FROM_
 #### => Send pointer of C# object to C++
 ``` C#
 GCHandle data = GCHandle.Alloc(YOUR_OBJECT);
-IntPtr dataPtr = GCHandle.ToIntPtr(userData);
+IntPtr dataPtr = GCHandle.ToIntPtr(data);
 ```
 A pointer allocated in that way can then be typecasted like:
   
 ``` C#
-YOUR_OBJECT data = (YOUR_OBJECT_TYPE)((GCHandle)userDataPtr).Target;
-// And to free it after use: 
+YOUR_OBJECT myObj = (YOUR_OBJECT_TYPE)((GCHandle)dataPtr).Target;
+```
+
+And to free it after use: 
+``` C#
 data.Free()
 ```
+
 #### => Receive string from C++ 
 Ways receive your strings as IntPtr. Receiving as a string will cause the C# Garbage Collector to deallocate it. To convert your IntPtr to string inside Unity use
   
