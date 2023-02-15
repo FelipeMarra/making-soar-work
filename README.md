@@ -66,7 +66,7 @@ To copy the built DLL inside the Unity project. To build the DLL just go `Build 
 </br>
 
 # Importing & Using the DLL Inside Unity
-#### 1. Import the functions
+## 1. Import the functions
 Inside a C# script on Unity use the attribute [DllImport("YOUR_DLL_NAME")] and the keywords `static extern` beforte every function signature one wants to import.
 ``` C#
 [DllImport("SoarUnityAPI")]
