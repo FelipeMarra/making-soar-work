@@ -1,5 +1,5 @@
 # Making Soar Work w/ Unity
- > making the <a href="https://soar.eecs.umich.edu/"> Soar <a> 9.6.1 cognitive architecture work with <a href="https://unity.com/"> Unity <a> 2021.3.14.f1 (on windows)
+ > making the <a href="https://soar.eecs.umich.edu/"> Soar <a> cognitive architecture (version  9.6.1) work with the <a href="https://unity.com/"> Unity <a> game engine (version 2021.3.14.f1). Currently the integration is only for windows, but Soar and Unity are multiplatform.
 
 ## Summary
 Creating a C++ DLL to expose your own created functions that make use of Soar, or expose Soar's functions in a more direct way, will work if done correctly. Besides the Mono's docs <a href="https://www.mono-project.com/docs/advanced/pinvoke/"> recommendation for generating the code automatically with swig <a>, using the C# sml Dlls that come with Soar (which are generated with swig) will crash Unity if you register for a Soar event. <br>
@@ -81,15 +81,19 @@ For me only worked passing the full path. Use Application.dataPath + "PATH_FROM_
 #### => Send pointer of C# object to C++
 ``` C#
 GCHandle data = GCHandle.Alloc(YOUR_OBJECT);
-IntPtr dataPtr = GCHandle.ToIntPtr(userData);
+IntPtr dataPtr = GCHandle.ToIntPtr(data);
 ```
 A pointer allocated in that way can then be typecasted like:
   
 ``` C#
-YOUR_OBJECT data = (YOUR_OBJECT_TYPE)((GCHandle)userDataPtr).Target;
-// And to free it after use: 
+YOUR_OBJECT myObj = (YOUR_OBJECT_TYPE)((GCHandle)dataPtr).Target;
+```
+
+And to free it after use: 
+``` C#
 data.Free()
 ```
+
 #### => Receive string from C++ 
 Ways receive your strings as IntPtr. Receiving as a string will cause the C# Garbage Collector to deallocate it. To convert your IntPtr to string inside Unity use
   
