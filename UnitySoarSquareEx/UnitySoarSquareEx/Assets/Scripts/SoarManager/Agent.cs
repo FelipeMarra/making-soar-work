@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using smlUnity;
 
 namespace smlUnity {
     public enum smlPrintEventId{
@@ -199,8 +200,8 @@ namespace smlUnity {
         /// removed during the last decision cycle. Dereferencing
         /// a removed WME causes a segmentation fault.
         ///</summary>
-        public IntPtr CreateStringWME(Identifier pParent, string atribute, string value) {
-            return createStringWME(_pAgent, pParent.GetPtr(), atribute, value);
+        public StringElement CreateStringWME(Identifier pParent, string atribute, string value) {
+            return new StringElement(createStringWME(_pAgent, pParent.GetPtr(), atribute, value));
         }
 
         ///<summary>
@@ -297,14 +298,14 @@ namespace smlUnity {
         /// removed during the last decision cycle. Dereferencing
         /// a removed WME causes a segmentation fault.
         ///</summary>
-        public void Update(IntPtr pWME, string value) {
-            updateStringWME(_pAgent, pWME, value);
+        public void Update(StringElement pWME, string value) {
+            updateStringWME(_pAgent, pWME.GetPtr(), value);
         }
-	    public void Update(IntPtr pWME, long value) {
-            updateIntWME(_pAgent, pWME, value);
+	    public void Update(IntElement pWME, long value) {
+            updateIntWME(_pAgent, pWME.GetPtr(), value);
         }
-	    public void Update(IntPtr pWME, double value) {
-            updateFloatWME(_pAgent, pWME, value);
+	    public void Update(FloatElement pWME, double value) {
+            updateFloatWME(_pAgent, pWME.GetPtr(), value);
         }
 
         ///<summary>

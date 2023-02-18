@@ -9,7 +9,7 @@ public class SquareAgent : SingletonMonobehavior<SquareAgent> {
     private Kernel _kernel;
     private static Agent _agent;
 
-    private static IntPtr[] blockedIds = new IntPtr[4];
+    private static StringElement[] blockedIds = new StringElement[4];
 
     private List<EventData> events = new List<EventData>();
 
