@@ -9,7 +9,8 @@ public class SquareAgent : SingletonMonobehavior<SquareAgent> {
     private Kernel _kernel;
     private static Agent _agent;
 
-    private static StringElement[] blockedIds = new StringElement[4];
+    ///<summary>Ids of the elements that represent a certain direction is blocked in north, east, south, west order</summary>
+    private static StringElement[] blockIds = new StringElement[4];
 
     private List<EventData> events = new List<EventData>();
 
@@ -40,10 +41,10 @@ public class SquareAgent : SingletonMonobehavior<SquareAgent> {
         Identifier inputId = _agent.GetInputLink();
         Identifier squareId = _agent.CreateIdWME(inputId, "square");
         Identifier blockedId = _agent.CreateIdWME(squareId, "blocked");
-        blockedIds[0] = _agent.CreateStringWME(blockedId, "north", "no");
-        blockedIds[1] = _agent.CreateStringWME(blockedId, "east", "no");
-        blockedIds[2] = _agent.CreateStringWME(blockedId, "south", "no");
-        blockedIds[3] = _agent.CreateStringWME(blockedId, "west", "no");
+        blockIds[0] = _agent.CreateStringWME(blockedId, "north", "no");
+        blockIds[1] = _agent.CreateStringWME(blockedId, "east", "no");
+        blockIds[2] = _agent.CreateStringWME(blockedId, "south", "no");
+        blockIds[3] = _agent.CreateStringWME(blockedId, "west", "no");
         _agent.Commit();
     }
 
@@ -85,10 +86,10 @@ public class SquareAgent : SingletonMonobehavior<SquareAgent> {
     }
 
     public void UpdateBlock(string northValue, string eastValue, string southValue, string westValue) {
-        _agent.Update(blockedIds[0], northValue);
-        _agent.Update(blockedIds[1], eastValue);
-        _agent.Update(blockedIds[2], southValue);
-        _agent.Update(blockedIds[3], westValue);
+        _agent.Update(blockIds[0], northValue);
+        _agent.Update(blockIds[1], eastValue);
+        _agent.Update(blockIds[2], southValue);
+        _agent.Update(blockIds[3], westValue);
         _agent.Commit();
     }
 
