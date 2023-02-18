@@ -1,12 +1,12 @@
 using System;
 using System.Runtime.InteropServices;
+using smlUnity;
 
 namespace smlUnity {
-    public class Identifier {
-        private IntPtr _pIdentifier;
+    public class Identifier: WMElement {
 
         public Identifier(IntPtr pIdentifier) {
-            _pIdentifier = pIdentifier;
+            _pWMElement = pIdentifier;
         }
 
 #region From DLL
@@ -23,31 +23,27 @@ namespace smlUnity {
         private static extern void addStatusError(IntPtr pIdentifier);
 #endregion
 
-        public IntPtr GetPtr(){
-            return _pIdentifier;
-        }
-
         ///<summary>
         /// Returns the "command name" for a top-level identifier on the output-link.
         /// That is for output-link O1 (O1 ^move M3) returns "move".
         /// Ps: https://www.mono-project.com/docs/advanced/pinvoke/#strings-as-return-values
         ///</summary>
         public string GetCommandName() {
-            return Marshal.PtrToStringAnsi(getCommandName(_pIdentifier));
+            return Marshal.PtrToStringAnsi(getCommandName(_pWMElement));
         }
 
         public string GetParameterValue(string attribute) {
-            return Marshal.PtrToStringAnsi(getParameterValue(_pIdentifier, attribute));
+            return Marshal.PtrToStringAnsi(getParameterValue(_pWMElement, attribute));
         }
 
          ///<summary>Adds "^status complete" as a child of this identifier.</summary>
         public void AddStatusComplete(){
-            addStatusComplete(_pIdentifier);
+            addStatusComplete(_pWMElement);
         }
 
         ///<summary>Adds "^status error" as a child of this identifier.</summary>
         public void AddStatusError(){
-            addStatusError(_pIdentifier);
+            addStatusError(_pWMElement);
         }
     }
 }
