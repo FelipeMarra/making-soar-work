@@ -22,21 +22,37 @@ void printError(const char* soarMessage, const char* optMessage = "") {
     Debug::Log(errorMessage, Color::Red);
 }
 
-sml::Kernel* createKernelInNewThread() {
+sml::Kernel* createKernelInNewThread(int portToListenOn) {
     // Create an instance of the Soar kernel in our process
-    sml::Kernel* pKernel = Kernel::CreateKernelInNewThread();
+    sml::Kernel* pKernel = Kernel::CreateKernelInNewThread(portToListenOn);
 
     // Check that nothing went wrong. We will always get back a kernel object
     // even if something went wrong and we have to abort.
     if (pKernel->HadError()) {
-        printError(pKernel->GetLastErrorDescription(), "createSoarKernel: ");
+        printError(pKernel->GetLastErrorDescription(), "createKernelInNewThread: ");
         return NULL;
     }
 
-    //cout << "createSoarKernel: Kernel Created" << endl;
-    Debug::Log("createSoarKernel: Kernel Created", Color::Green);
+    //cout << "createKernelInNewThread: Kernel Created" << endl;
+    Debug::Log("createKernelInNewThread: Kernel Created", Color::Green);
     return pKernel;
 }
+
+sml::Kernel* createKernelInCurrentThread(bool optimized, int portToListenOn) {
+    sml::Kernel* pKernel = Kernel::CreateKernelInCurrentThread(optimized, portToListenOn);
+
+    // Check that nothing went wrong. We will always get back a kernel object
+    // even if something went wrong and we have to abort.
+    if (pKernel->HadError()) {
+        printError(pKernel->GetLastErrorDescription(), "CreateKernelInCurrentThread: ");
+        return NULL;
+    }
+
+    //cout << "CreateKernelInCurrentThread: Kernel Created" << endl;
+    Debug::Log("CreateKernelInCurrentThread: Kernel Created", Color::Green);
+    return pKernel;
+}
+
 
 void shutdown(sml::Kernel* pKernel) {
     pKernel->Shutdown();

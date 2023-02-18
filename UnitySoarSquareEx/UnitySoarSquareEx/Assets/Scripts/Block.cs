@@ -53,11 +53,7 @@ public class Block : MonoBehaviour {
         }
     }
 
-    void UpdateBlock(Agent agent, IntPtr northId, IntPtr eastId, IntPtr southId, IntPtr westId) {
-        agent.Update(northId, northValue);
-        agent.Update(eastId, eastValue);
-        agent.Update(southId, southValue);
-        agent.Update(westId, westValue);
-        agent.Commit();
+    void UpdateBlock() {
+        SquareAgent.Instance.UpdateBlock(northValue, eastValue, southValue, westValue);
     }
 }

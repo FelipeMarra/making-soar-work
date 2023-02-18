@@ -14,11 +14,11 @@ public class SquareAgent : SingletonMonobehavior<SquareAgent> {
     private List<EventData> events = new List<EventData>();
 
     void Start() {
-        _kernel = new Kernel();
+        _kernel = Kernel.CreateKernelInNewThread();
 
         _kernel.SetAutoCommit(false);
 
-        _agent = new Agent("square", _kernel);
+        _agent = _kernel.CreateAgent("square");
 
         CreateBaseInputWMEs();
 
@@ -81,7 +81,15 @@ public class SquareAgent : SingletonMonobehavior<SquareAgent> {
 
         EventHandler.CallCommandEvent(commands);
 
-        EventHandler.CallUpdateBlockEvent(_agent, blockedIds[0], blockedIds[1], blockedIds[2], blockedIds[3]);
+        EventHandler.CallUpdateBlockEvent();
+    }
+
+    public void UpdateBlock(string northValue, string eastValue, string southValue, string westValue) {
+        _agent.Update(blockedIds[0], northValue);
+        _agent.Update(blockedIds[1], eastValue);
+        _agent.Update(blockedIds[2], southValue);
+        _agent.Update(blockedIds[3], westValue);
+        _agent.Commit();
     }
 
 #endregion

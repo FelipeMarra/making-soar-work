@@ -17,16 +17,25 @@ namespace smlUnity{
     }
 
     public class Kernel {
+        public const int kDefaultSMLPort = 12121;
+        public const int kSuppressListener = 0;
+        public const int kUseAnyPort = -1;
 
         private IntPtr _pKernel;
 
-        public Kernel(){
-            _pKernel = createKernelInNewThread();
+        public Kernel(IntPtr pKernel){
+            _pKernel = pKernel;
         }
 
 #region  From DLL
         [DllImport("SoarUnityAPI")]
-        private static extern IntPtr createKernelInNewThread();
+        private static extern IntPtr createKernelInNewThread(int portToListenOn);
+
+        [DllImport("SoarUnityAPI")]
+        private static extern IntPtr createKernelInCurrentThread(bool optimized, int portToListenOn);
+
+        [DllImport("SoarUnityAPI")]
+        private static extern IntPtr createAgent(string name, IntPtr pKernel);
 
         [DllImport("SoarUnityAPI")]
         private static extern void shutdown(IntPtr Kernel);
@@ -49,12 +58,47 @@ namespace smlUnity{
 
         #endregion
 #endregion
+        ///<summary>
+        /// Creates a connection to the Soar kernel that is embedded
+        ///  within the same process as the caller.
+        ///
+        /// If you're not sure which method to use, you generally want "InNewThread".
+        /// That extra thread usually makes your life easier.
+        ///
+        /// Creating in "current thread" will produce maximum performance but requires a little more work for the developer
+        /// (you must call CheckForIncomingCommands() periodically and you should not register for events and then go to sleep).
+        ///
+        /// Creating in "new thread" is simpler for the developer but will be slower (around a factor 2).
+        /// (It's simpler because there's no need to call CheckForIncomingCommands() periodically as this happens in a separate
+        /// thread running inside the kernel and incoming events are handled by another thread in the client).
+        ///</summary>
+        ///<param name="Optimized"> 
+        /// If this is a current thread connection, we can short-circuit parts of the messaging system for sending input and
+        /// running Soar.  If this flag is true we use those short cuts.  If you're trying to debug the SML libraries
+        /// you may wish to disable this option (so everything goes through the standard paths).  Not available if running in a new thread.
+        /// Also if you're looking for maximum performance be sure to read about the "auto commit" options below.
+        ///</param>
+        ///
+        /// <param name="port">   
+        /// The port number the kernel should use to receive remote connections.  The default port for SML is 12121 (kDefaultSMLPort)
+        /// (picked at random). Passing 0 (kSuppressListener) means no listening port will be created (so it will be impossible to make
+        /// remote connections to the kernel). Passing -1 (kUseAnyPort) means bind to any availble port (retrieve after success using
+        /// GetListenerPort()), and, for local connections, create a named pipe using the PID. To connect to this high-performance
+        /// local connection, simply pass the PID as the port in CreateRemoteConnection().
+        ///</param>
+        ///
+        ///<returns>
+        /// A new kernel object which is used to communicate with the kernel.
+        /// If an error occurs a Kernel object is still returned.  Call "HadError()" and "GetLastErrorDescription()" on it.
+        ///</returns>
+        public static Kernel CreateKernelInNewThread(int portToListenOn = kDefaultSMLPort) {
+            IntPtr pKernel = createKernelInNewThread(portToListenOn);
+            return new Kernel(pKernel);
+        }
 
-        /// <summary>
-        /// Returns this kernel's pointer.
-        /// </summary>
-        public IntPtr GetPtr(){
-            return _pKernel;
+        Kernel CreateKernelInCurrentThread(bool optimized = false, int portToListenOn = kDefaultSMLPort) {
+            IntPtr pKernel = createKernelInCurrentThread(optimized, portToListenOn);
+            return new Kernel(pKernel);
         }
 
         ///<summary>
@@ -89,6 +133,18 @@ namespace smlUnity{
         }
 
         //##################### Events ######################
+        /// <summary> 
+        /// Creates a new Soar agent with the given name.
+        /// This object is owned by the kernel and will be destroyed 
+        /// when the kernel is destroyed.
+        ///</summary>
+        ///
+        ///<returns> A pointer to the agent (or NULL if not found).</returns>  
+        public Agent CreateAgent(string name) {
+            IntPtr pAgent = createAgent(name, _pKernel);
+            return new Agent(pAgent, name, this);
+        }
+
         //#### Update
         ///<summary>
         /// Register for an "UpdateEvent".

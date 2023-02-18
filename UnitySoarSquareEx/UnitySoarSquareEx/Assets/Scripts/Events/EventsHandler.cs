@@ -11,11 +11,11 @@ public static class EventHandler {
         }
     }
 
-    public static event Action<Agent, IntPtr, IntPtr, IntPtr, IntPtr> UpdateBlockEvent;
+    public static event Action UpdateBlockEvent;
 
-    public static void CallUpdateBlockEvent(Agent agent, IntPtr northId, IntPtr eastId, IntPtr southId, IntPtr westId) {
+    public static void CallUpdateBlockEvent() {
         if(UpdateBlockEvent != null) {
-            UpdateBlockEvent(agent, northId, eastId, southId, westId);
+            UpdateBlockEvent();
         }
     }
 }

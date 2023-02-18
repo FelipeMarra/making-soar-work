@@ -8,7 +8,9 @@
 
 extern "C" {
 	//######## Manage Kernel & Agent & Productions #######################
-	SOARUNITYAPI_API sml::Kernel* createKernelInNewThread();
+	SOARUNITYAPI_API sml::Kernel* createKernelInNewThread(int);
+
+	SOARUNITYAPI_API sml::Kernel* createKernelInCurrentThread(bool, int);
 	
 	SOARUNITYAPI_API  void shutdown(sml::Kernel*);
 

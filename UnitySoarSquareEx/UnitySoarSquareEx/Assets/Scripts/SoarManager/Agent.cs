@@ -21,16 +21,13 @@ namespace smlUnity {
         private string _name;
         private Kernel _kernel;
 
-        public Agent(string name, Kernel kernel){
-            _pAgent = createAgent(name, kernel.GetPtr());
+        public Agent(IntPtr pAgent, string name, Kernel kernel) {
+            _pAgent = pAgent;
             _name = name;
             _kernel = kernel;
         }
 
 #region From DLL
-        [DllImport("SoarUnityAPI")]
-        private static extern IntPtr createAgent(string name, IntPtr pKernel);
-
         [DllImport("SoarUnityAPI")]
         private static extern int loadProductions(IntPtr pAgent, string path, bool echoResults);
 
@@ -411,7 +408,7 @@ namespace smlUnity {
             return commands(_pAgent);
         }
 
-        ////<summary>
+        ///<summary>
         /// Get the n-th "command".  A command in this context
         /// is an identifier wme that have been added to the top level of
         /// the output-link since the last decision cycle.
