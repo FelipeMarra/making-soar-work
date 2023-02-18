@@ -6,7 +6,7 @@ Creating a C++ DLL to expose your own created functions that make use of Soar, o
 
 In the example provided in this repo the second approach was chosen - expose Soar functions more directly - to try to recreate the Soar classes inside Unity. That approach will minimize the time one passes creating the DLL, and facilitate troubleshooting. </br>
 
-The current example provides some functions from the Kernel, Agent, WMEs classes. The <a href="https://github.com/FelipeMarra/making-soar-work/tree/main/UnitySoarSquareEx/DLL/SoarUnityAPI/x64/Release"> SoarUnity.dll <a> exports the functions from the Soar.dll - also, it can print from its C++ code into Unity's console -, and inside the Unity project the classes are created based on those to allow the use of Soar. They're not complete yet - the Agent one is in a more advanced stage. All of the imported functions are documented with the original docs plus some tips to deal with pointers in C#. </br>
+The current example provides some functions from the Kernel, Agent and WMEs classes. The <a href="https://github.com/FelipeMarra/making-soar-work/tree/main/UnitySoarSquareEx/DLL/SoarUnityAPI/x64/Release"> SoarUnity.dll <a> exports the functions from the Soar.dll - also, it can print from its C++ code into Unity's console -, and inside the Unity project the classes are created based on those to allow the use of Soar. They're not complete yet - the Agent one is in a more advanced stage. All of the imported functions are documented with the original docs plus some tips to deal with pointers in C#. </br>
 </br>
 
 # Exporting the Soar DLL
