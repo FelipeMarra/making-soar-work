@@ -167,6 +167,10 @@ bool isOutputLinkChangeAdd(sml::Agent* pAgent, int index) {
     return pAgent->IsOutputLinkChangeAdd(index);
 }
 
+void clearOutputLinkChanges(sml::Agent* pAgent) {
+    pAgent->ClearOutputLinkChanges();
+}
+
 int getNumberCommands(sml::Agent* pAgent) {
     return pAgent->GetNumberCommands();
 }
@@ -230,6 +234,15 @@ void runSelfTilOutput(sml::Agent* pAgent) {
 //##################### Events ######################
 #pragma region Events
 // TODO: only create register events functions here and use the C# sml example to write the calls inside Unity
+
+//###### Output
+int addOutputHandler(sml::Agent* pAgent, char const* pAttributeName, sml::OutputEventHandler handler, void* pUserData, bool addToBack) {
+    return pAgent->AddOutputHandler(pAttributeName, handler, pUserData, addToBack);
+}
+
+bool removeOutputHandler(sml::Agent* pAgent, int callbackID) {
+    return pAgent->RemoveOutputHandler(callbackID);
+}
 
 //###### Print
 int registerForPrintEvent(sml::Agent* pAgent, sml::smlPrintEventId id, sml::PrintEventHandler handler, void* pUserData, bool ignoreOwnEchos = true, bool addToBack = true) {

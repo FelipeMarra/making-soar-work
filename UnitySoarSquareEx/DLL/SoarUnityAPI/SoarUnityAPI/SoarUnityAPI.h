@@ -56,6 +56,8 @@ extern "C" {
 
 	SOARUNITYAPI_API bool isOutputLinkChangeAdd(sml::Agent*, int);
 
+	SOARUNITYAPI_API void clearOutputLinkChanges(sml::Agent*);
+
 	SOARUNITYAPI_API int getNumberCommands(sml::Agent*);
 
 	SOARUNITYAPI_API bool commands(sml::Agent*);
@@ -78,6 +80,11 @@ extern "C" {
 	SOARUNITYAPI_API void addStatusError(sml::Identifier*);
 
 	//##################### Events ######################
+	//###### Output
+	SOARUNITYAPI_API int addOutputHandler(sml::Agent*, char const*, sml::OutputEventHandler, void*, bool);
+
+	SOARUNITYAPI_API bool removeOutputHandler(sml::Agent*, int);
+
 	//###### Print
 	SOARUNITYAPI_API int registerForPrintEvent(sml::Agent*, sml::smlPrintEventId, sml::PrintEventHandler, void*, bool, bool);
 

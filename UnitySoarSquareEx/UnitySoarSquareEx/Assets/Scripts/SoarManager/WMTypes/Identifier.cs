@@ -4,12 +4,10 @@ using smlUnity;
 
 namespace smlUnity {
     public class Identifier: WMElement {
-
-        public Identifier(IntPtr pIdentifier) {
-            _pWMElement = pIdentifier;
+        public Identifier(IntPtr pWMElement) : base(pWMElement) {
         }
 
-#region From DLL
+        #region From DLL
         [DllImport("SoarUnityAPI")]
         private static extern IntPtr getCommandName(IntPtr pIdentifier);
 

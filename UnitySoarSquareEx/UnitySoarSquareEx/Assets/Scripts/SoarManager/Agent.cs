@@ -89,6 +89,9 @@ namespace smlUnity {
         private static extern bool isOutputLinkChangeAdd(IntPtr pAgent, int index);
 
         [DllImport("SoarUnityAPI")]
+        private static extern void clearOutputLinkChanges(IntPtr pAgent) ;
+
+        [DllImport("SoarUnityAPI")]
         private static extern int getNumberCommands(IntPtr pAgent);
 
         [DllImport("SoarUnityAPI")]
@@ -104,10 +107,35 @@ namespace smlUnity {
         private static extern bool isCommitRequired(IntPtr pAgent);
 
         //##################### Events ######################
+        //### Output 
+        ///<summary>
+        /// Handler for output events.
+        /// You register a specific attribute name (e.g. "move") and when this attribute appears on the output link (^io.output-link.move M3)
+        /// you are passed the working memory element ((I3 ^move M3) in this case) in the callback.  This mimics gSKI's output producer model.
+        ///</summary>
+        ///<param name="pUserData">Its an object sent by the user </param>
+        ///<param name="pAgent"> Its of type Agent </param>
+        ///<param name="pCommandName"> Its if type string </param>
+        ///<param name="pOutputWME"> Its of type WMElement </param>
+        public delegate void OutputEventHandler(IntPtr pUserData, IntPtr pAgent, IntPtr pCommandName, IntPtr pOutputWME);
+
+        [DllImport("SoarUnityAPI")]
+        private static extern int addOutputHandler(IntPtr pAgent, string pAttributeName, OutputEventHandler handler, IntPtr pUserData, bool addToBack);
+
+        [DllImport("SoarUnityAPI")]
+        private static extern bool removeOutputHandler(IntPtr pAgent, int callbackID);
+
         //###Print 
         #region Print
         //TODO: Show text on the screen instead of printing into the console for better visualization
 
+        ///<summary>
+        ///  Handler for Print events.
+        ///</summary>
+        ///<param name="eventID">Its a eneum of type smlPrintEventId </param>
+        ///<param name="pUserData">Its an object sent by the user </param>
+        ///<param name="pAgent"> Its of type Agent </param>
+        ///<param name="pMessage"> Its if type string </param>
         public delegate void PrintEventHandler(smlPrintEventId eventID, IntPtr pUserData, IntPtr pAgent, IntPtr pMessage);
 
         [DllImport("SoarUnityAPI")]
@@ -384,6 +412,13 @@ namespace smlUnity {
             return isOutputLinkChangeAdd(_pAgent, index);
         }
 
+
+        ///<summary> Deprecated: Clears the current list of changes to the output-link.</summary>
+        [Obsolete("This is now called automatically after each decision cycle.")]
+        public void ClearOutputLinkChanges() {
+            clearOutputLinkChanges(_pAgent);
+        }
+
         ///<summary>
         /// Get the number of "commands".  A command in this context
         /// is an identifier wme that have been added to the top level of
@@ -444,7 +479,30 @@ namespace smlUnity {
         }
 
         //##################### Events ######################
-        //TODO: Output Handler
+        //#### Output
+        ///<summary>
+        /// Register an "Output event handler".
+        /// This is one way to be notified when output occurs on the output link.
+        /// You register for a specific attribute name (e.g. "move") and when that attribute is added to the
+        /// output link the handler you have registered for that name is called.
+        ///</summary>
+        ///
+        /// <param name="pAttributeName"> The attribute which will trigger this callback ("move" in the example).
+        /// <param name="handler"> A function that will be called when the event happens
+        /// <param name="pUserData"> Arbitrary data that will be passed back to the handler function when the event happens.
+        /// <param name="addToBack"> If true add this handler is called after existing handlers.  If false, called before existing handlers.
+        ///
+        /// <returns> A unique ID for this callback (used to unregister the callback later)</returns>
+        public int AddOutputHandler(string pAttributeName, OutputEventHandler handler, IntPtr pUserData, bool addToBack = true) {
+            return addOutputHandler(_pAgent, pAttributeName, handler, pUserData, addToBack);
+        }
+
+        ///<summary> Unregister for a particular output event </summary>
+        public bool RemoveOutputHandler(int callbackID) {
+            return removeOutputHandler(_pAgent, callbackID);
+        }
+
+        //TODO: XML Event
 
         //TODO: Run Event (not working, like dont work even in pure C++)
 
@@ -452,6 +510,7 @@ namespace smlUnity {
 
         //TODO: Production Event
 
+        //#### Print
         ///<summary> 
         /// Register for an "PrintEvent".
         /// Multiple handlers can be registered for the same event.
@@ -482,8 +541,6 @@ namespace smlUnity {
         public  bool UnregisterForPrintEvent(int callbackId) {
             return unregisterForPrintEvent(_pAgent, callbackId);
         }
-
-        //TODO: XML Event
 
         //##################### Run ######################
         ///<summary> Run one Soar agent for the specified number of decisions </summary>

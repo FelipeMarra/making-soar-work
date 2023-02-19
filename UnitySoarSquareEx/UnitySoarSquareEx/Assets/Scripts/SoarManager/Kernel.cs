@@ -47,7 +47,13 @@ namespace smlUnity{
         //##################### Events ######################
         //#### Update
         #region Update
-
+        ///<summary>
+        /// Handler for Update events.
+        ///</summary>
+        ///<param name="eventID"> Its a eneum of type smlUpdateEventId </param>
+        ///<param name="pUserData">Its an object sent by the user </param>
+        ///<param name="pKernel"> Its of type Kernel </param>
+        ///<param name="runFlags"> Its a eneum of type smlRunFlags </param>
         public delegate void UpdateEventHandler(smlUpdateEventId eventID, IntPtr pUserData, IntPtr pKernel, smlRunFlags runFlags);
 
         [DllImport("SoarUnityAPI")]

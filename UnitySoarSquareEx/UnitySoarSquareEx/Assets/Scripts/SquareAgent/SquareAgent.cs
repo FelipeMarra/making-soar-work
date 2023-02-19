@@ -62,7 +62,7 @@ public class SquareAgent : SingletonMonobehavior<SquareAgent> {
         events.Add(new EventData(eventUserData, updateId, smlUnity.EventType.UPDATE));
     }
 
-    //Update
+    /// Print
     static void PrintEventCallback(smlPrintEventId eventID, IntPtr pUserData, IntPtr pAgent, IntPtr pMessage) {
         string userData = (string)((GCHandle)pUserData).Target;
         string message = Marshal.PtrToStringAnsi(pMessage);
