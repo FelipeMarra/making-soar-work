@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using smlUnity;
 
+[RequireComponent(typeof(DebugCpp))]
 public class SquareAgent : SingletonMonobehavior<SquareAgent> {
 
     private Kernel _kernel;
