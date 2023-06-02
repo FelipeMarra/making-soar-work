@@ -151,7 +151,7 @@ static void UpdateEventCallback(smlUpdateEventId eventID, IntPtr pUserData, IntP
     EventHandler.CallUpdateBlockEvent(_agent, blockedIds[0], blockedIds[1], blockedIds[2], blockedIds[3]);
 }
 ```
-## Ending Agent
+## Finalizing the Agent
 In the RegisterForEvents function, one can observe that they are being added to a list that is used for the SoarUtils.UnregisterForEvents, inside OnDisable, to unregister from the events. This approach made the code much cleaner than storing every event data pointer and id on the top of the class and unsubscribing from them one by one in the OnDisable function.
 
 ``` C#
