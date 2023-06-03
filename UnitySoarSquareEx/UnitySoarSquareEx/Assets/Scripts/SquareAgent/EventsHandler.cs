@@ -10,12 +10,4 @@ public static class EventHandler {
             CommandEvent(commands);
         }
     }
-
-    public static event Action UpdateBlockEvent;
-
-    public static void CallUpdateBlockEvent() {
-        if(UpdateBlockEvent != null) {
-            UpdateBlockEvent();
-        }
-    }
 }

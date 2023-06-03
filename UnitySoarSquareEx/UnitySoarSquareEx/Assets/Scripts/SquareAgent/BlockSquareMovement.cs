@@ -4,32 +4,23 @@ using smlUnity;
 
 public class BlockSquareMovement : MonoBehaviour {
 
-    private string northValue = "no", eastValue = "no", southValue = "no", westValue = "no";
-
-    private void OnEnable() {
-        EventHandler.UpdateBlockEvent += UpdateBlock;
-    }
-
-    private void OnDisable() {
-        EventHandler.UpdateBlockEvent -= UpdateBlock;
-    }
 
     void OnTriggerEnter2D(Collider2D other) {
         switch (other.gameObject.tag){
             case "North":
-                northValue = "yes";
+                SquareAgent.Instance.blockValues[0] = "yes";
                 Debug.Log("<color=red> Collided NORTH </color>");
                 break;
             case "East":
-                eastValue = "yes";
+                SquareAgent.Instance.blockValues[1] = "yes";
                 Debug.Log("<color=red> Collided EAST </color>");
                 break;
             case "South":
-                southValue = "yes";
+                SquareAgent.Instance.blockValues[2] = "yes";
                 Debug.Log("<color=red> Collided SOUTH </color>");
                 break;
             case "West":
-                westValue = "yes";
+                SquareAgent.Instance.blockValues[3] = "yes";
                 Debug.Log("<color=red> Collided WEST </color>");
                 break;
         }
@@ -38,22 +29,18 @@ public class BlockSquareMovement : MonoBehaviour {
     void OnTriggerExit2D(Collider2D other) {
         switch (other.gameObject.tag){
             case "North":
-                northValue = "no";
+                SquareAgent.Instance.blockValues[0] = "no";
                 break;
             case "East":
-                eastValue = "no";
+                SquareAgent.Instance.blockValues[1] = "no";
                 break;
             case "South":
-                southValue = "no";
+                SquareAgent.Instance.blockValues[2] = "no";
                 break;
             case "West":
-                westValue = "no";
+                SquareAgent.Instance.blockValues[3] = "no";
                 break;
             
         }
-    }
-
-    void UpdateBlock() {
-        SquareAgent.Instance.UpdateBlock(northValue, eastValue, southValue, westValue);
     }
 }

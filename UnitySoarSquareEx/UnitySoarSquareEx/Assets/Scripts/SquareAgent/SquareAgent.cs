@@ -10,8 +10,11 @@ public class SquareAgent : SingletonMonobehavior<SquareAgent> {
     private Kernel _kernel;
     private static Agent _agent;
 
+    private bool agentIsLocked = false;
+
     ///<summary>Ids of the elements that represent a certain direction is blocked in north, east, south, west order</summary>
     private static StringElement[] blockIds = new StringElement[4];
+    public string[] blockValues = new string[4];
 
     private List<EventData> events = new List<EventData>();
 
@@ -22,6 +25,11 @@ public class SquareAgent : SingletonMonobehavior<SquareAgent> {
 
         _agent = _kernel.CreateAgent("square");
 
+        blockValues[0] = "no";
+        blockValues[1] = "no";
+        blockValues[2] = "no";
+        blockValues[3] = "no";
+
         CreateBaseInputWMEs();
 
         RegisterForEvents();
@@ -30,8 +38,22 @@ public class SquareAgent : SingletonMonobehavior<SquareAgent> {
     }
 
     void Update() {
-        _agent.RunSelfTilOutput();
+        if(!agentIsLocked) {
+            UpdateSoarInputData();
+            _agent.RunSelfTilOutput();
+        }
     }
+
+    public void LockAgent() {
+        Debug.Log("<color=lightblue> LOCKED AGENT </color>");
+        agentIsLocked = true;
+    }
+
+    public void UnlockAgent() {
+        Debug.Log("<color=lightblue> UNLOCKED AGENT </color>");
+        agentIsLocked = false;
+    }
+
 
     void OnDisable(){
         SoarUtils.UnregisterForEvents(events, _agent, _kernel);
@@ -74,6 +96,8 @@ public class SquareAgent : SingletonMonobehavior<SquareAgent> {
     /// Since every function inside the update callback needs to be static it makes sense to use Unity's events so non static functions
     /// can be called. It also makes sense from a code organization perspective.
     static void UpdateEventCallback(smlUpdateEventId eventID, IntPtr pUserData, IntPtr pKernel, smlRunFlags runFlags) {
+        SquareAgent.Instance.LockAgent();
+
         List<Identifier> commands = new List<Identifier>();
 
         for (int i = 0; i < _agent.GetNumberCommands(); i++) {
@@ -82,17 +106,16 @@ public class SquareAgent : SingletonMonobehavior<SquareAgent> {
         }
 
         EventHandler.CallCommandEvent(commands);
-
-        EventHandler.CallUpdateBlockEvent();
     }
 
-    public void UpdateBlock(string northValue, string eastValue, string southValue, string westValue) {
-        _agent.Update(blockIds[0], northValue);
-        _agent.Update(blockIds[1], eastValue);
-        _agent.Update(blockIds[2], southValue);
-        _agent.Update(blockIds[3], westValue);
+    ///Updates the input data inside the Soar agent
+    public void UpdateSoarInputData() {
+        Debug.Log("<color=orange> UPDATED INPUT </color>");
+        _agent.Update(blockIds[0], blockValues[0]);
+        _agent.Update(blockIds[1], blockValues[1]);
+        _agent.Update(blockIds[2], blockValues[2]);
+        _agent.Update(blockIds[3], blockValues[3]);
         _agent.Commit();
     }
-
 #endregion
 }

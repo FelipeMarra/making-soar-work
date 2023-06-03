@@ -40,6 +40,8 @@ public class SquareMovement : MonoBehaviour {
                 cmd.AddStatusComplete();
             }
         }
+        Debug.Log("<color=green> CMD COMPLETED </color>");
+        SquareAgent.Instance.UnlockAgent();
     }
 
 }
