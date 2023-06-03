@@ -26,7 +26,7 @@ public class SquareAgent : SingletonMonobehavior<SquareAgent> {
 
         RegisterForEvents();
 
-        _agent.LoadProductions(Application.dataPath + "/Soar/Productions/square-agent.soar");
+        _agent.LoadProductions(Application.dataPath + "/Scripts/AI/Soar/Productions/square-agent.soar");
     }
 
     void Update() {

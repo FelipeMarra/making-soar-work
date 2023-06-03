@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using smlUnity;
 
-public class Block : MonoBehaviour {
+public class BlockSquareMovement : MonoBehaviour {
 
     private string northValue = "no", eastValue = "no", southValue = "no", westValue = "no";
 

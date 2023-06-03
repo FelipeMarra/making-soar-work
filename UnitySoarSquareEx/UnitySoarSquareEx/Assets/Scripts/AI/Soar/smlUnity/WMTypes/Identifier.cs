@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using smlUnity;
 
 namespace smlUnity {
     public class Identifier: WMElement {

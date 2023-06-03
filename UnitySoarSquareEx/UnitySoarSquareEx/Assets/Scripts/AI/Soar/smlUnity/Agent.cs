@@ -244,8 +244,8 @@ namespace smlUnity {
         /// removed during the last decision cycle. Dereferencing
         /// a removed WME causes a segmentation fault.
         ///</summary>
-        public IntPtr CreateIntWME(Identifier pParent, string atribute, long value) {
-            return createIntWME(_pAgent , pParent.GetPtr(), atribute, value);
+        public IntElement CreateIntWME(Identifier pParent, string atribute, long value) {
+            return new IntElement(createIntWME(_pAgent , pParent.GetPtr(), atribute, value));
         }
         
 
@@ -262,8 +262,8 @@ namespace smlUnity {
         /// removed during the last decision cycle. Dereferencing
         /// a removed WME causes a segmentation fault.
         ///</summary>
-        public IntPtr CreateFloatWME(Identifier pParent, string atribute, double value) {
-            return createFloatWME(_pAgent, pParent.GetPtr(), atribute, value);
+        public FloatElement CreateFloatWME(Identifier pParent, string atribute, double value) {
+            return new FloatElement(createFloatWME(_pAgent, pParent.GetPtr(), atribute, value));
         }
 
         ///<summary>
@@ -369,8 +369,8 @@ namespace smlUnity {
         /// removed during the last decision cycle. Dereferencing
         /// a removed WME causes a segmentation fault.
         ///</summary>
-        public bool DestroyWME(IntPtr pWME) {
-            return destroyWME(_pAgent, pWME);
+        public bool DestroyWME(WMElement pWME) {
+            return destroyWME(_pAgent, pWME.GetPtr());
         }
 
         ///<summary>

@@ -1,12 +1,15 @@
-
 sp {apply*operator*create-action-command
    (state <s> ^operator <o>
               ^io.output-link <ol>)
    (<o> ^actions <act>)
+    #A1    ^move   M1
    (<act> ^<att> <value>)
+    #M1     ^direction  D
    (<value> ^<att2> <value2>)
 -->
+#        ^move    M1
    (<ol> ^<att> <value3>)
+   #   M1    ^direction D  
    (<value3> ^<att2> <value2>)
     (write |Apply |<att>|: |<value2>||)
 }
