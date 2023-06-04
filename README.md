@@ -58,7 +58,7 @@ extern "C" {
 #### 6. Build DLL & Post Build Command
 Go to `Project > Properties > Build Events > Post Build Event > Command line` and - for this example file structure - use the code 
 ```
-xcopy /y /d "$(OutputPath)SoarUnityAPI.dll" "$(ProjectPath)..\..\..\..\..\UnitySoarSquareEx\Assets\Soar\DLL"
+xcopy /y /d "$(OutputPath)SoarUnityAPI.dll" "$(ProjectPath)..\..\..\..\..\UnitySoarSquareEx\Assets\Scripts\AI\Soar\DLL"
 ```
 To copy the built DLL inside the Unity project. To build the DLL just go `Build > Build Solution`.
 
@@ -121,24 +121,26 @@ This example made use of <a href="https://stackoverflow.com/questions/43732825/u
  </br>
 
 # Square Agent
-The agent is a simple square. The square can move in one of the four directions (north, east, south or west). When approaching the defined borders the square will be blocked to continue in that direction. 
+The agent is a simple square. The square can move in one of four directions from the cardinal points. Once one direction is chosen the agente will prefere to maintain it, only changing when approaching the defined borders. 
 
 ![Video_1676461153_AdobeExpress](https://user-images.githubusercontent.com/89817439/219099315-89599ddd-f75d-47fc-8597-c0694d0310e9.gif)
 
-## Initializing Agent
-For demo purposes, the agent is being initialized in the Start function. When running the agent is clear that the start process takes too long, so in a real scenario transform your agent in a singleton, create a function to initialize it, and execute it in a loading screen.
-
 ## Running Agent
-In the current version of the example the agent is running in the Update function using RunSelfTilOutput. In other words, once per frame it is making a decision, having its output processed and input updated. It might be interesting to run it inside a <a href="https://docs.unity3d.com/Manual/JobSystem.html"> Job <a>, because despite the fact that Soar's kernel runs in a independent thread, the program will be blocked to wait its decision cycle.
-``` C#
+In the current version of the example the agent is running in the Update function using RunSelfTilOutput. In other words, once per frame it is making a decision, having its output processed and input updated. It might be interesting to run the agent inside a <a href="https://docs.unity3d.com/Manual/JobSystem.html"> Job <a>, because despite the fact that Soar's kernel runs in an independent thread, the program will be blocked to wait its decision cycle.
+```C#
 void Update() {
-    _agent.RunSelfTilOutput();
+    if(!agentIsLocked) {
+        UpdateSoarInputData();
+        _agent.RunSelfTilOutput();
+    }
 }
 ```
 ## Reacting to Events
 Since all functions inside the callbacks need to be static, it makes sense to use Unity's events so nonstatic functions can be called. This approach also improved the agent initialization performance if compared to call the functions executed by the events directly into the UpdateEventCallback.
-``` C#
+```C#
 static void UpdateEventCallback(smlUpdateEventId eventID, IntPtr pUserData, IntPtr pKernel, smlRunFlags runFlags) {
+    SquareAgent.Instance.LockAgent();
+
     List<Identifier> commands = new List<Identifier>();
 
     for (int i = 0; i < _agent.GetNumberCommands(); i++) {
@@ -147,10 +149,10 @@ static void UpdateEventCallback(smlUpdateEventId eventID, IntPtr pUserData, IntP
     }
 
     EventHandler.CallCommandEvent(commands);
-
-    EventHandler.CallUpdateBlockEvent(_agent, blockedIds[0], blockedIds[1], blockedIds[2], blockedIds[3]);
 }
 ```
+As one might have observed in the last two code snipets, the Soar agent will be locked when a command is received. After the command execution it will be unlocked again.
+
 ## Finalizing the Agent
 In the RegisterForEvents function, one can observe that they are being added to a list that is used for the SoarUtils.UnregisterForEvents, inside OnDisable, to unregister from the events. This approach made the code much cleaner than storing every event data pointer and id on the top of the class and unsubscribing from them one by one in the OnDisable function.
 
