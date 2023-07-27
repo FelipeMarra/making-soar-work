@@ -2,12 +2,13 @@
  > making the <a href="https://soar.eecs.umich.edu/"> Soar <a> cognitive architecture (version  9.6.1) work with the <a href="https://unity.com/"> Unity <a> game engine (version 2021.3.14.f1). Currently the integration is only for windows, but Soar and Unity are multiplatform.
 
 ## Summary
-Creating a C++ DLL to expose your own created functions that make use of Soar, or expose Soar's functions in a more direct way, will work if done correctly. Besides the Mono's docs <a href="https://www.mono-project.com/docs/advanced/pinvoke/#invoking-unmanaged-code"> recommendation for generating the code automatically with swig <a>, using the C# sml Dlls that come with Soar (which are generated with swig) will crash Unity if you register for a Soar event. <br>
+Creating a C++ DLL to expose your own created functions that make use of Soar, or expose Soar's functions in a more direct way, will work if done correctly. Besides the <a href="https://www.mono-project.com/docs/advanced/pinvoke/#invoking-unmanaged-code">  Mono docs <a> recommendation for generating the code automatically with swig, using the C# sml Dlls that come with Soar (which are generated with swig) will crash Unity if you register for a Soar event. <br>
 
-In the example provided in this repo the second approach was chosen - expose Soar functions more directly - to try to recreate the Soar classes inside Unity. This approach will minimize the time one passes creating the DLL, and facilitate troubleshooting. </br>
+In the example provided in this repo the second approach was chosen - expose Soar functions more directly - to recreate the Soar classes inside Unity. This approach will minimize the time one passes creating the DLL, and facilitate troubleshooting. </br>
 
-The current example provides some functions from the Kernel, Agent and WMEs classes. The <a href="https://github.com/FelipeMarra/making-soar-work/tree/main/UnitySoarSquareEx/DLL/SoarUnityAPI/x64/Release"> SoarUnity.dll <a> exports the functions from the Soar.dll - also, it can print from its C++ code into Unity's console -, and inside the Unity project the classes are created based on those to allow the use of Soar. They're not complete yet - the Agent one is in a more advanced stage. All of the imported functions are documented with the text from the original docs plus some tips to deal with pointers in C#. </br>
-</br>
+The current example provides functions from the Kernel, Agent and WMEs classes. The <a href="https://github.com/FelipeMarra/making-soar-work/tree/main/UnitySoarSquareEx/DLL/SoarUnityAPI/x64/Release"> SoarUnity.dll <a> exports the functions from the Soar.dll - also, it can print from its C++ code into Unity's console -, and inside the Unity project the classes are created based on those to allow the use of Soar. Although they're not complete yet - the Agent one is in a more advanced stage - the present classes are suficient to create agentes. All of the imported functions are documented with the text from the original docs plus some tips to deal with pointers in C#. Some helper classes were also created to process the commands received from Soar. </br>
+
+The following teaches how to get Soar working with Unity and presents a achitecture to receive and process its commands. </br>
 
 # Exporting the Soar DLL
 > This example was created with Visual Studio and only thought to work on windows for now. The DLL project can be found <a href="https://github.com/FelipeMarra/making-soar-work/tree/main/UnitySoarSquareEx/DLL/SoarUnityAPI"> here <a>.
@@ -126,7 +127,7 @@ The agent is a simple square. The square can move in one of four directions from
 ![Video_1676461153_AdobeExpress](https://user-images.githubusercontent.com/89817439/219099315-89599ddd-f75d-47fc-8597-c0694d0310e9.gif)
 
 ## Running Agent
-In the current version of the example the agent is running in the Update function using RunSelfTilOutput. In other words, once per frame it is making a decision, having its output processed and input updated. It might be interesting to run the agent inside a <a href="https://docs.unity3d.com/Manual/JobSystem.html"> Job <a>, because despite the fact that Soar's kernel runs in an independent thread, the program will be blocked to wait its decision cycle.
+In the current version of the example the agent is running in the Update function using RunSelfTilOutput. In other words, once per frame - when it isn't blocked - it will have its input updated, make a decision and have its output processed. It might be interesting to run the agent inside a <a href="https://docs.unity3d.com/Manual/JobSystem.html"> Job <a>, because despite the fact that Soar's kernel runs in an independent thread, the program will be blocked to wait its decision cycle.
 ```C#
 void Update() {
     if(!agentIsLocked) {
@@ -136,25 +137,84 @@ void Update() {
 }
 ```
 ## Reacting to Events
-Since all functions inside the callbacks need to be static, it makes sense to use Unity's events so nonstatic functions can be called. This approach also improved the agent initialization performance if compared to call the functions executed by the events directly into the UpdateEventCallback.
+Since all functions inside the callbacks need to be static, it makes sense to use Unity's events so nonstatic functions can be called. This approach also improved the agent initialization performance if compared to call the functions executed by the events directly into the UpdateEventCallback. 
+
+When the UpdateEventCallback (snippet below) function is called by Soar the agent is locked, a command list is created and the event to process the commands is called.
 ```C#
-static void UpdateEventCallback(smlUpdateEventId eventID, IntPtr pUserData, IntPtr pKernel, smlRunFlags runFlags) {
-    SquareAgent.Instance.LockAgent();
+SquareAgent.Instance.LockAgent();
 
-    List<Identifier> commands = new List<Identifier>();
+int numCmds = _agent.GetNumberCommands();
 
-    for (int i = 0; i < _agent.GetNumberCommands(); i++) {
-        Identifier cmd = _agent.GetCommand(i);
-        commands.Add(cmd);
+List<SoarCmd> cmds = new List<SoarCmd>();
+
+for (int i = 0; i < numCmds; i++) {
+    Identifier cmdId = _agent.GetCommand(i);
+    SoarCmd cmd = null;
+
+    switch (SoarCmd.GetTypeFromIdentifier(cmdId)) {
+        case SoarCmdType.move:
+            cmd = new SoarMoveCmd(cmdId);
+            break;
+        default:
+            Debug.Log("<color=red>################ UNKNOWN COMMAND " + cmdId.GetCommandName() + "</color>");
+            break;
     }
 
-    EventHandler.CallCommandEvent(commands);
+    cmds.Add(cmd);
+
+    if(cmds.Count == 0) {
+        SquareAgent.Instance.UnlockAgent();
+        return;
+    }
+
+    EventHandler.CallCommandEvent(cmds);
 }
 ```
-As one might have observed in the last two code snipets, the Soar agent will be locked when a command is received. After the command execution it will be unlocked again.
+
+Each SoarCmd class encapsulates its Run and Reset logics, also containing a priority number that is used by the AgentCmdManager class (snippet below) to reorder the commands accordingly before start executing then. After a command is executed the AddCompleteAndResetCommand method of the AgentCmdManager must be called to the add status complete augmentation to the commands and process the next one in the stack. After all the commands are executed, the agent will be unlocked, allowing it to receive the update, make a decision, and get it's output processed again.
+
+```C#
+public void SortAndRunCmds(List<SoarCmd> cmds) {
+    _cmds = cmds;
+    _cmds.Sort((e1,e2) => {
+        if(e1.priority > e2.priority){
+            return 1;
+        }
+        if(e1.priority < e2.priority){
+            return -1;
+        }
+        return 0;
+    });
+    RunFirstCmd();
+}
+
+public void RunFirstCmd() {
+    _currentCmd = _cmds[0];
+    _currentCmd.Run();
+}
+
+public void AddCompleteAndResetCommand() {
+    if(_currentCmd.type != SoarCmdType.none) {
+        _currentCmd.AddStatusComplete();
+        ResetCommand();
+    }
+}
+
+private void ResetCommand() {
+    _currentCmd.Reset();
+    _currentCmd = new SoarCmd();
+
+    _cmds.RemoveAt(0);
+    if(_cmds.Count > 0) {
+        RunFirstCmd();
+    } else {
+        SquareAgent.Instance.UnlockAgent();
+    }
+}
+```
 
 ## Finalizing the Agent
-In the RegisterForEvents function, one can observe that they are being added to a list that is used for the SoarUtils.UnregisterForEvents, inside OnDisable, to unregister from the events. This approach made the code much cleaner than storing every event data pointer and id on the top of the class and unsubscribing from them one by one in the OnDisable function.
+In the RegisterForEvents method inside the SquareAgent class, one can observe that they are being added to a list that is used for the SoarUtils.UnregisterForEvents, inside OnDisable, to unregister from the events. This approach made the code much cleaner than storing every event data pointer and id on the top of the class and unsubscribing from them one by one in the OnDisable function.
 
 ``` C#
 void OnDisable(){
