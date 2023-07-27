@@ -98,14 +98,40 @@ public class SquareAgent : SingletonMonobehavior<SquareAgent> {
     static void UpdateEventCallback(smlUpdateEventId eventID, IntPtr pUserData, IntPtr pKernel, smlRunFlags runFlags) {
         SquareAgent.Instance.LockAgent();
 
-        List<Identifier> commands = new List<Identifier>();
+        int numCmds = _agent.GetNumberCommands();
 
-        for (int i = 0; i < _agent.GetNumberCommands(); i++) {
-            Identifier cmd = _agent.GetCommand(i);
-            commands.Add(cmd);
+        List<SoarCmd> cmds = new List<SoarCmd>();
+
+        for (int i = 0; i < numCmds; i++) {
+            Identifier cmdId = _agent.GetCommand(i);
+            SoarCmd cmd = null;
+
+            switch (SoarCmd.GetTypeFromIdentifier(cmdId)) {
+                case SoarCmdType.move:
+                    cmd = new SoarMoveCmd(cmdId);
+                    break;
+                default:
+                    Debug.Log("<color=red>################ UNKNOWN COMMAND " + cmdId.GetCommandName() + "</color>");
+                    break;
+            }
+
+            if(cmd != null && cmd.isStatusComplete) {
+                //#TODO: Try to solve again wiht a soar rule that removes all status complete or in this point use a function to
+                // remove the WME at once. This wont occur in this simple demo.
+                Debug.Log("<color=red> @@@@@@@@@@@@@@@@@@@@@@ SKIPING COMPLETED " + cmd.name +" CMD @@@@@@@@@@@@@@@@ </color>");
+            } else {
+                cmds.Add(cmd);
+            }
         }
 
-        EventHandler.CallCommandEvent(commands);
+        if(cmds.Count == 0) {
+            Debug.Log("<color=red>################ NO COMMANDS RECEIVED ################</color>");
+            SquareAgent.Instance.UnlockAgent();
+            return;
+        }
+
+        Debug.Log("<color=lightblue> ********************** RECEIVED " + numCmds +" CMDS ********************** </color>");
+        EventHandler.CallCommandEvent(cmds);
     }
 
     ///Updates the input data inside the Soar agent

@@ -1,24 +1,19 @@
-sp {apply*operator*create-action-command
-   (state <s> ^operator <o>
-              ^io.output-link <ol>)
-   (<o> ^actions <act>)
-    #A1    ^move   M1
-   (<act> ^<att> <value>)
-    #M1     ^direction  D
-   (<value> ^<att2> <value2>)
+#============== CMD Copier ======================
+sp {apply*operator*create-action-cmd
+    (state <s> ^operator.actions.<attr> <value>
+               ^io.output-link <out>)
 -->
-#        ^move    M1
-   (<ol> ^<att> <value3>)
-   #   M1    ^direction D  
-   (<value3> ^<att2> <value2>)
-    (write |Apply |<att>|: |<value2>||)
+    (<out> ^<attr> <value>)
+    #(write (crlf) |CEATED |<value>|);|)
 }
 
-sp {apply*operator*remove-command
-   (state <s> ^operator.actions
-              ^io.output-link <ol>)
-   (<ol> ^<att> <value>)
-   (<value> ^status complete)
+#========= CMD Garbage Collector =================
+sp {apply*operator*remove-cmd
+    (state <s> ^operator.actions
+               ^io.output-link <out>)
+    (<out> ^<attr> <value>)
+    (<value> ^status complete)
 -->
-   (<ol> ^<att> <value> -)
+    #(write (crlf) |REMOVED |<value>|);|)
+    (<out> ^<attr> <value> -)
 }

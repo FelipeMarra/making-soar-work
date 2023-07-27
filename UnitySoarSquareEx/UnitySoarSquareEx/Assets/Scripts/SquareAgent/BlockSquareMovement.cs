@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using smlUnity;
 
 public class BlockSquareMovement : MonoBehaviour {
 
