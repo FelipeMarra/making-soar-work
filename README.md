@@ -124,7 +124,7 @@ This example made use of <a href="https://stackoverflow.com/questions/43732825/u
 # Square Agent
 The agent is a simple square. The square can move in one of four directions from the cardinal points. Once one direction is chosen the agente will prefere to maintain it, only changing when approaching the defined borders. 
 
-![Video_1676461153_AdobeExpress](https://user-images.githubusercontent.com/89817439/219099315-89599ddd-f75d-47fc-8597-c0694d0310e9.gif)
+https://github.com/FelipeMarra/making-soar-work/assets/89817439/e57f4469-5240-400a-8ccf-dbfefba7aaf2
 
 ## Running Agent
 In the current version of the example the agent is running in the Update function using RunSelfTilOutput. In other words, once per frame - when it isn't blocked - it will have its input updated, make a decision and have its output processed. It might be interesting to run the agent inside a <a href="https://docs.unity3d.com/Manual/JobSystem.html"> Job <a>, because despite the fact that Soar's kernel runs in an independent thread, the program will be blocked to wait its decision cycle.
