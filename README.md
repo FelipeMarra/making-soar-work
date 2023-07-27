@@ -136,7 +136,7 @@ void Update() {
     }
 }
 ```
-## Reacting to Events
+## Processing Soar Commands
 Since all functions inside the callbacks need to be static, it makes sense to use Unity's events so nonstatic functions can be called. This approach also improved the agent initialization performance if compared to call the functions executed by the events directly into the UpdateEventCallback. 
 
 When the UpdateEventCallback (snippet below) function is called by Soar the agent is locked, a command list is created and the event to process the commands is called.
