@@ -214,7 +214,7 @@ private void ResetCommand() {
 ```
 
 ## Finalizing the Agent
-In the RegisterForEvents method inside the SquareAgent class, one can observe that they are being added to a list that is used for the SoarUtils.UnregisterForEvents, inside OnDisable, to unregister from the events. This approach made the code much cleaner than storing every event data pointer and id on the top of the class and unsubscribing from them one by one in the OnDisable function.
+In the RegisterForEvents method inside the SquareAgent class, one can observe that they are being added to a list that is used for the SoarUtils.UnregisterForEvents, inside OnDisable, to unregister from the events.
 
 ``` C#
 void OnDisable(){
