@@ -171,7 +171,7 @@ for (int i = 0; i < numCmds; i++) {
 }
 ```
 
-Each SoarCmd class encapsulates its Run and Reset logics, also containing a priority number that is used by the AgentCmdManager class (snippet below) to reorder the commands accordingly before start executing then. After a command is executed the AddCompleteAndResetCommand method of the AgentCmdManager must be called to the add status complete augmentation to the commands and process the next one in the stack. After all the commands are executed, the agent will be unlocked, allowing it to receive the update, make a decision, and get it's output processed again.
+Each SoarCmd class encapsulates its Run and Reset logics, also containing a priority number that is used by the AgentCmdManager class (snippet below) to reorder the commands accordingly before start executing then. After a command is executed the AddCompleteAndResetCommand method of the AgentCmdManager must be called to add the status complete augmentation to the commands and process the next one in the stack. After all the commands are executed, the agent will be unlocked, allowing it to receive the update, make a decision, and get it's output processed again.
 
 ```C#
 public void SortAndRunCmds(List<SoarCmd> cmds) {
