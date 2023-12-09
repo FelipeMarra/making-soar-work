@@ -73,7 +73,7 @@ Inside a C# script on Unity use the attribute [DllImport("YOUR_DLL_NAME")] and t
 [DllImport("SoarUnityAPI")]
 private static extern IntPtr createAgent(string name, IntPtr pKernel);
  ```
-The IntPtr class allows you to receive pointers to C++ classes, strings, etc. <a href="https://www.mono-project.com/docs/advanced/pinvoke/"> Mono docs <a> will explain
+The IntPtr class allows the reception of pointers to C++ classes, strings, etc. <a href="https://www.mono-project.com/docs/advanced/pinvoke/"> Mono docs <a> will explain
 in detail how to import your functions, but here you go some tips about that and using Soar functions in general:
 
 #### => Load productions
