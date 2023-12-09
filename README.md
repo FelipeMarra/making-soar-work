@@ -8,7 +8,7 @@ In the example provided in this repo the second approach was chosen - expose Soa
 
 The current example provides functions from the Kernel, Agent and WMEs classes. The <a href="https://github.com/FelipeMarra/making-soar-work/tree/main/UnitySoarSquareEx/DLL/SoarUnityAPI/x64/Release"> SoarUnity.dll <a> exports the functions from the Soar.dll - also, it can print from its C++ code into Unity's console -, and inside the Unity project the classes are created based on those to allow the use of Soar. Although they're not complete yet - the Agent one is in a more advanced stage - the present classes are suficient to create agentes. All of the imported functions are documented with the text from the original docs plus some tips to deal with pointers in C#. Some helper classes were also created to process the commands received from Soar. </br>
 
-The following teaches how to get Soar working with Unity and presents a achitecture to receive and process its commands. </br>
+The following teaches how to get Soar working with Unity and presents an achitecture to receive and process its commands. </br>
 
 # Exporting the Soar DLL
 > This example was created with Visual Studio and only thought to work on windows for now. The DLL project can be found <a href="https://github.com/FelipeMarra/making-soar-work/tree/main/UnitySoarSquareEx/DLL/SoarUnityAPI"> here <a>.
